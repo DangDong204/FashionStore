@@ -4,7 +4,7 @@
 <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg rounded-3">
-      <div class="modal-header bg-info text-white">
+      <div class="modal-header bg-warning text-black">
         <h5 class="modal-title fw-semibold" id="editCategoryModalLabel">
           <i class="ri-edit-2-line me-1"></i> Chỉnh sửa danh mục
         </h5>

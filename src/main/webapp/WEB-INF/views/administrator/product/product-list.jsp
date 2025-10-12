@@ -105,19 +105,51 @@
 							        <td>
 							          <!-- Xem chi tiết -->
 							          <button type="button"
-							                  class="btn btn-primary btn-sm text-white"
-							                  title="Xem chi tiết">
-							            <i class="ri-eye-fill"></i>
-							          </button>
-							
-							          <!-- Chỉnh sửa -->
-							          <button type="button"
-							                  class="btn btn-warning btn-sm"
-							                  title="Chỉnh sửa">
-							            <i class="ri-pencil-fill"></i>
-							          </button>
-							
-							          <!-- Xóa -->
+									        class="btn btn-primary btn-sm text-white"
+									        title="Xem chi tiết"
+									        data-bs-toggle="modal"
+									        data-bs-target="#detailProductModal"
+									        data-id="${product.id}"
+									        data-name="${product.name}"
+									        data-category="${product.category.name}"
+									        data-avatar="${product.avatar}"
+									        data-price="${product.price}"
+									        data-saleprice="${product.salePrice}"
+									        data-ishot="${product.isHot}"
+									        data-stock="${product.stockQuantity}"
+									        data-createby="${product.createBy}"
+									        data-updateby="${product.updateBy}"
+									        data-createdate="<fmt:formatDate value='${product.createDate}' pattern='dd-MM-yyyy'/>"
+									        data-updatedate="<fmt:formatDate value='${product.updateDate}' pattern='dd-MM-yyyy'/>"
+									        data-status="${product.status}"
+									        data-shortdesc="${product.shortDescription}"
+									        data-detaildesc="${product.detailDescription}">
+									  <i class="ri-eye-fill"></i>
+									</button> 
+									
+									<!-- Chỉnh sửa -->
+									<button type="button" class="btn btn-warning btn-sm"
+										title="Chỉnh sửa" data-bs-toggle="modal"
+										data-bs-target="#editProductModal" 
+										data-id="${product.id}"
+										data-name="${product.name}"
+										data-categoryid="${product.category.id}"
+										data-price="${product.price}"
+										data-saleprice="${product.salePrice}"
+										data-avatar="${product.avatar}"
+										data-ishot="${product.isHot}"
+										data-stock="${product.stockQuantity}"
+										data-createby="${product.createBy}"
+										data-updateby="${product.updateBy}"
+										data-createdate="<fmt:formatDate value='${product.createDate}' pattern='yyyy-MM-dd'/>"
+										data-updatedate="<fmt:formatDate value='${product.updateDate}' pattern='yyyy-MM-dd'/>"
+										data-status="${product.status}"
+										data-shortdesc="${product.shortDescription}"
+										data-detaildesc="${product.detailDescription}">
+										<i class="ri-pencil-fill"></i>
+									</button> 
+									
+									<!-- Xóa -->
 							          <a href="${env}/admin/product/delete/${product.id}"
 							             class="btn btn-danger btn-sm"
 							             title="Xóa"
@@ -138,11 +170,9 @@
 	</main>
 	<!-- End #main -->
 	
-	<%-- <jsp:include page="/WEB-INF/views/administrator/product/product-read.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/administrator/product/product-read.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/administrator/product/product-add.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/views/administrator/product/product-edit.jsp"></jsp:include> --%>
-	
-	
+	<jsp:include page="/WEB-INF/views/administrator/product/product-edit.jsp"></jsp:include>
 	
 	<!-- Footer - File -->
 	<jsp:include page="/WEB-INF/views/administrator/layout/footer.jsp"></jsp:include>

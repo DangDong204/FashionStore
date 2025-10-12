@@ -4,8 +4,8 @@
 <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg rounded-3">
-      <div class="modal-header bg-info text-white">
-        <h5 class="modal-title fw-semibold" id="addCategoryModalLabel">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title fw-semibold" id="addCategoryModal">
           <i class="ri-add-circle-line me-1"></i> Thêm danh mục
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
