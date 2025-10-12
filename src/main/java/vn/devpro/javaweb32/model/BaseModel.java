@@ -1,0 +1,115 @@
+package vn.devpro.javaweb32.model;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+@MappedSuperclass
+public abstract class BaseModel {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+	
+	
+	@Column(name = "create_by", nullable = true)
+	private Integer createBy;
+	
+	@Column(name = "update_by", nullable = true)
+	private Integer updateBy;
+	
+	// Date: java.util.Date
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "create_date", nullable = true)
+	private Date createDate;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "update_date", nullable = true)
+	private Date updateDate;
+	
+	@Column(name = "status", nullable = true)
+    private Boolean status = Boolean.TRUE;
+
+	public BaseModel() {
+		super();
+	}
+
+	public BaseModel(Integer id, Integer createBy, Integer updateBy, Date createDate, Date updateDate, Boolean status) {
+		super();
+		this.id = id;
+		this.createBy = createBy;
+		this.updateBy = updateBy;
+		this.createDate = createDate;
+		this.updateDate = updateDate;
+		this.status = status;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public Integer getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(Integer createBy) {
+		this.createBy = createBy;
+	}
+
+	public Integer getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(Integer updateBy) {
+		this.updateBy = updateBy;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+	
+	@PrePersist
+	protected void onCreate() {
+	    this.createDate = new Date();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+	    this.updateDate = new Date();
+	}
+
+}
