@@ -73,21 +73,34 @@
             <input type="text" class="form-control" id="detail-updatedate" readonly>
           </div>
 
-          <div class="col-md-12 text-center">
-            <label class="form-label fw-semibold d-block">Ảnh sản phẩm</label>
-            <img id="detail-avatar" src="" alt="Ảnh sản phẩm" class="img-thumbnail" style="max-height: 200px;">
-          </div>
+			<div class="col-md-12 text-center">
+				<label class="form-label fw-semibold d-block">Ảnh đại diện</label>
+				<img id="detail-avatar" src="" alt="Ảnh sản phẩm"
+					class="img-thumbnail shadow-sm mb-3"
+					style="max-height: 200px; border-radius: 8px;">
+			</div>
+			
+			<div class="col-md-12 text-center">
+				<label class="form-label fw-semibold d-block">Ảnh liên quan</label>
+				<div id="detail-images"
+					class="d-flex flex-wrap justify-content-center gap-2 border rounded p-2"
+					style="min-height: 100px;">
+				</div>
+			</div>
 
-          <div class="col-12">
-            <label class="form-label fw-semibold">Mô tả ngắn</label>
-            <textarea class="form-control" id="detail-shortdesc" rows="2" readonly></textarea>
-          </div>
 
-          <div class="col-12">
-            <label class="form-label fw-semibold">Mô tả chi tiết</label>
-            <textarea class="form-control" id="detail-detaildesc" rows="4" readonly></textarea>
-          </div>
-        </form>
+			<div class="col-12">
+				<label class="form-label fw-semibold">Mô tả ngắn</label>
+				<textarea class="form-control" id="detail-shortdesc" rows="2"
+					readonly></textarea>
+			</div>
+
+			<div class="col-12">
+				<label class="form-label fw-semibold">Mô tả chi tiết</label>
+				<textarea class="form-control" id="detail-detaildesc" rows="4"
+					readonly></textarea>
+			</div>
+		</form>
       </div>
 
       <div class="modal-footer">
@@ -116,8 +129,32 @@
     document.getElementById('detail-detaildesc').value = button.getAttribute('data-detaildesc') || "(Không có mô tả chi tiết)";
 
     // Hiển thị ảnh
+    /* const avatar = button.getAttribute('data-avatar');
+    document.getElementById('detail-avatar').src = avatar ? avatar : '${env}/administrator/img/product-1.jpg'; */
+    
+ 	// Hiển thị ảnh đại diện
     const avatar = button.getAttribute('data-avatar');
-    document.getElementById('detail-avatar').src = avatar ? avatar : '${env}/administrator/img/product-1.jpg';
+    const avatarImg = document.getElementById('detail-avatar');
+    avatarImg.src = avatar ? avatar : '${env}/administrator/img/product-1.jpg';
+
+    // Hiển thị các ảnh phụ
+    const imagesContainer = document.getElementById('detail-images');
+    imagesContainer.innerHTML = ''; // Xóa ảnh cũ nếu có
+    const imagesAttr = button.getAttribute('data-images');
+
+    if (imagesAttr && imagesAttr.trim() !== '') {
+      const imagePaths = imagesAttr.split(';');
+      imagePaths.forEach(path => {
+        const img = document.createElement('img');
+        img.src = path.trim();
+        img.className = 'img-thumbnail shadow-sm';
+        img.style = 'width: 80px; height: 80px; object-fit: cover;';
+        imagesContainer.appendChild(img);
+      });
+    } else {
+      imagesContainer.innerHTML = '<span class="text-muted fst-italic">(Không có ảnh liên quan)</span>';
+    }
+
 
  	// Hiển thị trạng thái hot
     const isHotAttr = button.getAttribute('data-ishot');

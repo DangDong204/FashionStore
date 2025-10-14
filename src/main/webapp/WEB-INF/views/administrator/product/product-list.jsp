@@ -72,7 +72,7 @@
 							        <td>
 									  <c:choose>
 									    <c:when test="${not empty product.avatar}">
-									      <img src="${product.avatar}"
+									      <img src="${env }/${product.avatar}"
 									           alt="${product.name}"
 									           class="img-thumbnail"
 									           style="width: 70px; height: 70px; object-fit: cover;">
@@ -101,10 +101,15 @@
 							        </td>
 							
 							        <td>${product.stockQuantity}</td>
-							
+									
 							        <td>
-							          <!-- Xem chi tiết -->
-							          <button type="button"
+							          <!-- Xem chi tiết --> 
+							          	<c:set var="imagePaths" value="" />
+										<c:forEach var="img" items="${product.productImages}" varStatus="s">
+										  <c:set var="imagePaths"
+										         value="${imagePaths}${env }/${img.path}${!s.last ? ';' : ''}" />
+										</c:forEach>
+									<button type="button"
 									        class="btn btn-primary btn-sm text-white"
 									        title="Xem chi tiết"
 									        data-bs-toggle="modal"
@@ -112,7 +117,10 @@
 									        data-id="${product.id}"
 									        data-name="${product.name}"
 									        data-category="${product.category.name}"
-									        data-avatar="${product.avatar}"
+									        data-avatar="${env }/${product.avatar}"
+									        data-images="${imagePaths}"
+									        
+
 									        data-price="${product.price}"
 									        data-saleprice="${product.salePrice}"
 									        data-ishot="${product.isHot}"

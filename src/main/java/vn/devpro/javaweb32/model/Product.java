@@ -1,12 +1,17 @@
 package vn.devpro.javaweb32.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -45,10 +50,11 @@ public class Product extends BaseModel{
 	public Product() {
 		super();
 	}
-
-	public Product(Category category, String name, String avatar, BigDecimal price, BigDecimal salePrice, Boolean isHot,
+	
+	public Product(Integer id, Integer createBy, Integer updateBy, Date createDate, Date updateDate, Boolean status,
+			Category category, String name, String avatar, BigDecimal price, BigDecimal salePrice, Boolean isHot,
 			Integer stockQuantity, String shortDescription, String detailDescription) {
-		super();
+		super(id, createBy, updateBy, createDate, updateDate, status);
 		this.category = category;
 		this.name = name;
 		this.avatar = avatar;
@@ -131,6 +137,18 @@ public class Product extends BaseModel{
 	public void setDetailDescription(String detailDescription) {
 		this.detailDescription = detailDescription;
 	}
-    
+
+	public List<ProductImage> getProductImages() {
+		return productImages;
+	}
+
+	public void setProductImages(List<ProductImage> productImages) {
+		this.productImages = productImages;
+	}
+
+	// ----------- Mapping one-to-many: productImage-to-product ------------
+	// ----------- Cách này khác các thầy (Thầy dùng Set) ------------------
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductImage> productImages = new ArrayList<>();
     
 }

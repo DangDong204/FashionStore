@@ -1,5 +1,7 @@
 package vn.devpro.javaweb32.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -18,8 +20,9 @@ public class Category extends BaseModel{
 		super();
 	}
 
-	public Category(String name, String description) {
-		super();
+	public Category(Integer id, Integer createBy, Integer updateBy, Date createDate, Date updateDate, Boolean status,
+			String name, String description) {
+		super(id, createBy, updateBy, createDate, updateDate, status);
 		this.name = name;
 		this.description = description;
 	}

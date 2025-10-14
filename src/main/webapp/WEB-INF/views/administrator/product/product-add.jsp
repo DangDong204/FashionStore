@@ -13,7 +13,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
       </div>
 
-      <form action="${env}/admin/product/add" method="post">
+      <form action="${env}/admin/product/add" method="post" enctype="multipart/form-data">
         <div class="modal-body">
           <div class="row g-3">
 
@@ -33,14 +33,24 @@
                 </c:forEach>
               </select>
             </div>
+            
+         	<!-- Ảnh sản phẩm (Server - Trong Folder UploadFiles -->
+			<div class="col-md-6">
+				<label class="form-label fw-semibold">Ảnh đại diện(avatar)</label> 
+				<input type="file" class="form-control"
+					name="avatarFile" accept="image/*" required>
+			</div>
+			
+			<div class="col-md-6">
+			  <label class="form-label fw-semibold">Ảnh phụ (có thể chọn nhiều)</label>
+			  <input type="file" class="form-control" name="imageFiles" multiple accept="image/*">
+			  <small class="text-muted fst-italic">Giữ Ctrl hoặc Shift để chọn nhiều ảnh</small>
+			  <!-- Nơi hiển thị preview -->
+			  <div id="preview-images" class="d-flex flex-wrap gap-2 mt-2"></div>
+			</div>
+						
 
-            <!-- Link ảnh (URL) -->
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Ảnh sản phẩm (URL)</label>
-              <input type="text" class="form-control" name="avatar" placeholder="Dán link ảnh vào đây">
-            </div>
-
-            <!-- Giá -->
+			<!-- Giá -->
             <div class="col-md-3">
               <label class="form-label fw-semibold">Giá gốc</label>
               <input type="number" class="form-control" name="price" step="0.01" min="0" required>
@@ -101,3 +111,96 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // ==== XEM TRƯỚC ẢNH ĐẠI DIỆN ====
+  const avatarInput = document.querySelector("input[name='avatarFile']");
+  avatarInput.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = evt => {
+        const oldPreview = avatarInput.parentNode.querySelector(".img-preview-wrapper");
+        if (oldPreview) oldPreview.remove();
+
+        // Tạo vùng preview
+        const wrapper = document.createElement("div");
+        wrapper.className = "img-preview-wrapper position-relative d-inline-block mt-2";
+
+        const preview = document.createElement("img");
+        preview.src = evt.target.result;
+        preview.className = "img-thumbnail";
+        preview.style.maxWidth = "150px";
+
+        // Nút xóa ảnh đại diện
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.innerHTML = "&times;";
+        removeBtn.className = "btn btn-sm btn-danger position-absolute top-0 end-0 m-1 rounded-circle";
+        removeBtn.style.lineHeight = "1";
+        removeBtn.addEventListener("click", () => {
+          wrapper.remove();
+          avatarInput.value = "";
+        });
+
+        wrapper.appendChild(preview);
+        wrapper.appendChild(removeBtn);
+        avatarInput.parentNode.appendChild(wrapper);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // ==== XEM TRƯỚC ẢNH PHỤ ====
+  const imageFilesInput = document.querySelector("input[name='imageFiles']");
+  const previewContainer = document.getElementById("preview-images");
+
+  imageFilesInput.addEventListener("change", e => {
+    previewContainer.innerHTML = ""; // xoá cũ
+    const files = Array.from(e.target.files);
+
+    files.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = evt => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "position-relative d-inline-block";
+        wrapper.style.margin = "5px";
+
+        const img = document.createElement("img");
+        img.src = evt.target.result;
+        img.className = "img-thumbnail";
+        img.style.maxWidth = "100px";
+        img.style.height = "auto";
+        img.style.objectFit = "cover";
+
+        // Nút xóa ảnh phụ
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.innerHTML = "&times;";
+        removeBtn.className = "btn btn-sm btn-danger position-absolute top-0 end-0 m-1 rounded-circle";
+        removeBtn.style.lineHeight = "1";
+        removeBtn.addEventListener("click", () => {
+          wrapper.remove();
+        });
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(removeBtn);
+        previewContainer.appendChild(wrapper);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // ==== XOÁ ẢNH KHI ĐÓNG MODAL ====
+  const modal = document.getElementById("addProductModal");
+  modal.addEventListener("hidden.bs.modal", () => {
+    previewContainer.innerHTML = "";
+    const oldAvatar = avatarInput.parentNode.querySelector(".img-preview-wrapper");
+    if (oldAvatar) oldAvatar.remove();
+    avatarInput.value = "";
+    imageFilesInput.value = "";
+  });
+});
+</script>
+

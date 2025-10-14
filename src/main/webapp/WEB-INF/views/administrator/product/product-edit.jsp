@@ -11,7 +11,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
       </div>
 
-      <form action="${env}/admin/product/edit" method="post" class="row g-3 m-3">
+      <form action="${env}/admin/product/edit" method="post" class="row g-3 m-3" enctype="multipart/form-data">
         <!-- ID ẩn -->
         <input type="hidden" name="id" id="edit-id">
 
@@ -42,11 +42,21 @@
           <input type="number" class="form-control" id="edit-saleprice" name="salePrice" step="0.01">
         </div>
 
-        <!-- Ảnh -->
-        <div class="col-md-6">
-          <label class="form-label fw-semibold">Ảnh (đường dẫn)</label>
-          <input type="text" class="form-control" id="edit-avatar" name="avatar">
-        </div>
+        <!-- Ảnh đại diện -->
+		<div class="col-md-6">
+		  <label class="form-label fw-semibold">Ảnh đại diện (avatar)</label>
+		  <input type="file" class="form-control" id="edit-avatarfile" name="avatarFile" accept="image/*">
+		  <div id="edit-avatar-preview" class="mt-2"></div>
+		</div>
+		
+		<!-- Ảnh phụ -->
+		<div class="col-md-6">
+		  <label class="form-label fw-semibold">Ảnh phụ (có thể chọn nhiều)</label>
+		  <input type="file" class="form-control" id="edit-imagefiles" name="imageFiles" multiple accept="image/*">
+		  <small class="text-muted fst-italic">Giữ Ctrl hoặc Shift để chọn nhiều ảnh</small>
+		  <div id="edit-preview-images" class="d-flex flex-wrap gap-2 mt-2"></div>
+		</div>
+		        
 
         <!-- Số lượng tồn -->
         <div class="col-md-6">
@@ -115,29 +125,84 @@
 </div>
 
 <script>
-  const editProductModal = document.getElementById('editProductModal');
-  editProductModal.addEventListener('show.bs.modal', function (event) {
-    const button = event.relatedTarget;
+const editProductModal = document.getElementById('editProductModal');
+const avatarInput = document.getElementById('edit-avatarfile');
+const avatarPreview = document.getElementById('edit-avatar-preview');
+const imageInput = document.getElementById('edit-imagefiles');
+const previewContainer = document.getElementById('edit-preview-images');
 
-    document.getElementById('edit-id').value = button.getAttribute('data-id');
-    document.getElementById('edit-name').value = button.getAttribute('data-name');
-    document.getElementById('edit-categoryid').value = button.getAttribute('data-categoryid');
-    document.getElementById('edit-price').value = button.getAttribute('data-price');
-    document.getElementById('edit-saleprice').value = button.getAttribute('data-saleprice');
-    document.getElementById('edit-avatar').value = button.getAttribute('data-avatar');
-    document.getElementById('edit-stock').value = button.getAttribute('data-stock');
-    document.getElementById('edit-createby').value = button.getAttribute('data-createby');
-    document.getElementById('edit-updateby').value = button.getAttribute('data-updateby');
-    document.getElementById('edit-createdate').value = button.getAttribute('data-createdate');
-    document.getElementById('edit-updatedate').value = button.getAttribute('data-updatedate');
-    document.getElementById('edit-shortdesc').value = button.getAttribute('data-shortdesc') || "";
-    document.getElementById('edit-detaildesc').value = button.getAttribute('data-detaildesc') || "";
+// =========================
+// 🔸 Khi mở modal sửa (gán dữ liệu cũ)
+// =========================
+editProductModal.addEventListener('show.bs.modal', function (event) {
+  const button = event.relatedTarget;
 
-    // Xử lý boolean dạng "true"/"false" hoặc "1"/"0"
-    const isHot = button.getAttribute('data-ishot');
-    document.getElementById('edit-ishot').value = (isHot === '1' || isHot === 'true') ? 'true' : 'false';
+  // --- Gán dữ liệu cơ bản ---
+  document.getElementById('edit-id').value = button.getAttribute('data-id');
+  document.getElementById('edit-name').value = button.getAttribute('data-name');
+  document.getElementById('edit-categoryid').value = button.getAttribute('data-categoryid');
+  document.getElementById('edit-price').value = button.getAttribute('data-price');
+  document.getElementById('edit-saleprice').value = button.getAttribute('data-saleprice');
+  document.getElementById('edit-stock').value = button.getAttribute('data-stock');
+  document.getElementById('edit-createby').value = button.getAttribute('data-createby');
+  document.getElementById('edit-updateby').value = button.getAttribute('data-updateby');
+  document.getElementById('edit-createdate').value = button.getAttribute('data-createdate');
+  document.getElementById('edit-updatedate').value = button.getAttribute('data-updatedate');
+  document.getElementById('edit-shortdesc').value = button.getAttribute('data-shortdesc') || "";
+  document.getElementById('edit-detaildesc').value = button.getAttribute('data-detaildesc') || "";
 
-    const status = button.getAttribute('data-status');
-    document.getElementById('edit-status').value = (status === '1' || status === 'true') ? 'true' : 'false';
+  // --- Hot / Status ---
+  document.getElementById('edit-ishot').value =
+    (button.getAttribute('data-ishot') === '1' || button.getAttribute('data-ishot') === 'true') ? 'true' : 'false';
+  document.getElementById('edit-status').value =
+    (button.getAttribute('data-status') === '1' || button.getAttribute('data-status') === 'true') ? 'true' : 'false';
+
+  // ❌ Không hiển thị ảnh cũ nữa
+  avatarPreview.innerHTML = "";
+  previewContainer.innerHTML = "";
+
+  // Reset lại input file khi mở modal mới
+  avatarInput.value = "";
+  imageInput.value = "";
+});
+
+// =========================
+// 🔸 Khi chọn ảnh mới (xem trước)
+// =========================
+
+// Khi chọn avatar mới
+avatarInput.addEventListener('change', e => {
+  avatarPreview.innerHTML = "";
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = evt => {
+      avatarPreview.innerHTML = `
+        <div class="position-relative d-inline-block">
+          <img src="${evt.target.result}" class="img-thumbnail" style="max-width:150px;">
+        </div>
+      `;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Khi chọn nhiều ảnh phụ mới
+imageInput.addEventListener('change', e => {
+  previewContainer.innerHTML = "";
+  Array.from(e.target.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = evt => {
+      const img = document.createElement("img");
+      img.src = evt.target.result;
+      img.className = "img-thumbnail";
+      img.style.maxWidth = "100px";
+      img.style.margin = "3px";
+      previewContainer.appendChild(img);
+    };
+    reader.readAsDataURL(file);
   });
+});
 </script>
+
+

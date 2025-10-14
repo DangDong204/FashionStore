@@ -8,8 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import vn.devpro.javaweb32.dto.Jw32Contant;
+
 @Configuration
-public class MvcConfigurer implements WebMvcConfigurer {
+public class MvcConfigurer implements WebMvcConfigurer, Jw32Contant {
 	@Bean
 	public ViewResolver viewResolver() {
 		// Xu ly va tra ve doi tuong view thong qua ten
@@ -29,7 +31,7 @@ public class MvcConfigurer implements WebMvcConfigurer {
 				"/administrator/**").addResourceLocations(
 						"classpath:/administrator/");
 		
-//		registry.addResourceHandler("/UploadFiles/**").addResourceLocations("file:" + FOLDER_UPLOAD);
+		registry.addResourceHandler("/UploadFiles/**").addResourceLocations("file:" + FOLDER_UPLOAD);
 	}
 
 }
