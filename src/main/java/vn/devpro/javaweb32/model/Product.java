@@ -150,5 +150,9 @@ public class Product extends BaseModel{
 	// ----------- Cách này khác các thầy (Thầy dùng Set) ------------------
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductImage> productImages = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<SaleOrderProduct> saleOrderProducts = new ArrayList<>();
+
     
 }

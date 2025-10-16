@@ -53,66 +53,79 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shop__cart__table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Sản Phẩm</th>
-                                    <th>Đơn giá</th>
-                                    <th>Số lượng</th>
-                                    <th>Thành tiền</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            	<c:forEach var="cartProduct" items="${cart.cartProducts }">
-	                                <tr>
-	                                    <td class="cart__product__item">
-	                                        <img src="${classpath}/${cartProduct.avatar }" alt=""
-	                                        	style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 10px;">
-	                                        <div class="cart__product__item__title">
-	                                            <h6>${cartProduct.name }</h6>
-	                                        </div>
-	                                    </td>
-	                                    <td class="cart__price">
-	                                    	 <fmt:formatNumber value="${cartProduct.price}" 
-	                                    	 type="currency" currencySymbol="₫" maxFractionDigits="0" />
-										</td>
-	                                    <td>
-	                                        <div class="d-flex justify-content-center align-items-center">
-						                        <button type="button" class="btn btn-sm btn-light"
-						                                onclick="updateProductQuantity(${cartProduct.id}, -1)">-</button>
-						                        <input type="text" id="productQuantity_${cartProduct.id}"
-						                               value="${cartProduct.quantity}"
-						                               class="form-control text-center mx-2" style="width: 60px;">
-						                        <button type="button" class="btn btn-sm btn-light"
-						                                onclick="updateProductQuantity(${cartProduct.id}, 1)">+</button>
-						                    </div>
-	                                    </td>
-	                                    <td class="cart__total">
-	                                    	<span id="totalPrice_${cartProduct.id}">
-						                        <fmt:formatNumber value="${cartProduct.price * cartProduct.quantity}" 
-						                                          type="currency" currencySymbol="₫" maxFractionDigits="0" />
-						                    </span>
-	                                    </td>
-	                                    <td class="cart__close">
-	                                    	<a href="${classpath}/cart/delete/${cartProduct.id}" 
-						                       class="btn btn-danger btn-sm">
-						                        <i class="fa fa-trash"></i>
-						                    </a>
-	                                    </td>
-	                                </tr>
-	                                
-                                </c:forEach>
-                                
-                            </tbody>
-                        </table>
+                    	<c:choose>
+                    		<c:when test="${not empty cart and not empty cart.cartProducts}">
+		                        <table>
+		                            <thead>
+		                                <tr>
+		                                    <th>Sản Phẩm</th>
+		                                    <th>Đơn giá</th>
+		                                    <th>Số lượng</th>
+		                                    <th>Thành tiền</th>
+		                                    <th></th>
+		                                </tr>
+		                            </thead>
+		                            <tbody>
+		                            	<c:forEach var="cartProduct" items="${cart.cartProducts }">
+			                                <tr id="row_${cartProduct.id}">
+			                                    <td class="cart__product__item">
+			                                        <img src="${classpath}/${cartProduct.avatar }" alt=""
+			                                        	style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 10px;">
+			                                        <div class="cart__product__item__title">
+			                                            <h6>${cartProduct.name }</h6>
+			                                        </div>
+			                                    </td>
+			                                    <td class="cart__price">
+			                                    	 <fmt:formatNumber value="${cartProduct.price}" 
+			                                    	 type="currency" currencySymbol="₫" maxFractionDigits="0" />
+												</td>
+			                                    <td>
+			                                        <div class="d-flex justify-content-center align-items-center">
+								                        <button type="button" class="btn btn-sm btn-light"
+								                                onclick="updateProductQuantity(${cartProduct.id}, -1)">-</button>
+								                        <input type="text" id="productQuantity_${cartProduct.id}"
+								                               value="${cartProduct.quantity}"
+								                               class="form-control text-center mx-2" style="width: 60px;">
+								                        <button type="button" class="btn btn-sm btn-light"
+								                                onclick="updateProductQuantity(${cartProduct.id}, 1)">+</button>
+								                    </div>
+			                                    </td>
+			                                    <td class="cart__total">
+			                                    	<span id="totalPrice_${cartProduct.id}">
+								                        <fmt:formatNumber value="${cartProduct.price * cartProduct.quantity}" 
+								                                          type="currency" currencySymbol="₫" maxFractionDigits="0" />
+								                    </span>
+			                                    </td>
+			                                    <td class="cart__close">
+			                                    	<button type="button" class="btn btn-danger btn-sm"
+										                    onclick="deleteCartProduct(${cartProduct.id})">
+										                <i class="fa fa-trash"></i>
+										            </button>
+			                                    </td>
+			                                </tr>
+			                                
+		                                </c:forEach>
+		                                
+		                            </tbody>
+		                        </table>
+		                     </c:when>
+		                     
+		                     <c:otherwise>
+		                     	<div class="text-center my-5">
+		                            <img src="${env}/customer/img/empty-cart.png" alt="Empty cart" 
+		                                 style="width:150px; opacity:0.8; margin-bottom:20px;">
+		                            <h4 class="mb-3">Giỏ hàng của bạn đang trống</h4>
+		                            <p class="text-muted mb-4">Hãy tiếp tục mua sắm để thêm sản phẩm yêu thích nhé!</p>
+		                        </div>
+		                     </c:otherwise>
+		                </c:choose>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="cart__btn">
-                        <a href="#">Continue Shopping</a>
+                        <a href="${env }/index">Tiếp tục mua sắm</a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -141,7 +154,7 @@
                             	minFractionDigits="0"></fmt:formatNumber></span>
                             </li>
                         </ul>
-                        <a href="#" class="primary-btn">Proceed to checkout</a>
+                        <a href="${env }/checkout" class="primary-btn">Đặt hàng</a>
                     </div>
                 </div>
             </div>
@@ -197,6 +210,46 @@
 			});
 		}
 	</script>
+	<script type="text/javascript">
+		function deleteCartProduct(productId) {
+		    if (!confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) return;
+		
+		    $.ajax({
+		        url: "/cart-product-delete", // Gọi controller xóa
+		        type: "POST",
+		        contentType: "application/json",
+		        data: JSON.stringify({ id: productId }),
+		        dataType: "json",
+		        success: function(jsonResult) {
+		            if (jsonResult.code === 200) {
+		                // Xóa dòng sản phẩm trong bảng giỏ hàng
+		                $("#row_" + productId).remove();
+		                // Cập nhật tổng tiền, tổng số sản phẩm
+		                $("#totalCartPriceId").html(jsonResult.totalCartPrice);
+		                $("#totalCartProducts").html(jsonResult.totalCartProducts);
+		
+		                // Nếu giỏ hàng trống thì hiển thị thông báo
+		                if (jsonResult.totalCartProducts == 0) {
+		                	const emptyCartHtml = `
+		                        <div class="text-center my-5">
+		                            <img src="${env}/customer/img/empty-cart.png" alt="Empty cart" 
+		                                 style="width:150px; opacity:0.8; margin-bottom:20px;">
+		                            <h4 class="mb-3">Giỏ hàng của bạn đang trống</h4>
+		                            <p class="text-muted mb-4">Hãy tiếp tục mua sắm để thêm sản phẩm yêu thích nhé!</p>
+		                            
+		                        </div>
+		                    `;
+		                    $("table").replaceWith(emptyCartHtml);
+		                }
+		            }
+		        },
+		        error: function() {
+		            alert("Xóa sản phẩm thất bại!");
+		        }
+		    });
+		}
+	</script>
+			
 	
 </body>
 

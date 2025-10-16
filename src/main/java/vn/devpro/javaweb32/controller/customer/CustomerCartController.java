@@ -133,4 +133,32 @@ public class CustomerCartController extends BaseController{
 		}
 		return str;
 	}
+	
+	@RequestMapping(value = "/cart-product-delete", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> deleteCartProduct(
+	        final HttpServletRequest request,
+	        @RequestBody CartProduct cartProduct) {
+
+	    Map<String, Object> jsonResult = new HashMap<>();
+	    HttpSession session = request.getSession();
+	    if (session.getAttribute("cart") != null) {
+	        Cart cart = (Cart) session.getAttribute("cart");
+	        int index = cart.findById(cartProduct.getId());
+	        if (index != -1) {
+	            cart.getCartProducts().remove(index);
+	        }
+	        session.setAttribute("cart", cart);
+
+	        jsonResult.put("code", 200);
+	        jsonResult.put("totalCartPrice", toCurrency(cart.totalCartPrice()) + " ₫");
+	        jsonResult.put("totalCartProducts", super.totalCartProducts(request));
+	    } else {
+	        jsonResult.put("code", 404);
+	        jsonResult.put("message", "Không tìm thấy giỏ hàng");
+	    }
+
+	    return ResponseEntity.ok(jsonResult);
+	}
+
+
 }
