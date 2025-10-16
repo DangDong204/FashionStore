@@ -73,7 +73,11 @@
 			                            </a>
 			                        </li>
 			                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-			                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+			                        <li><a href="javascript:void(0);" 
+									       onclick="addToCart(${product.id}, 1, ${product.price}, '${product.name}', '${product.avatar}')">
+									        <span class="icon_bag_alt"></span>
+									    </a>
+									</li>
 			                    </ul>
 			                </div>
 			                <div class="product__item__text">
@@ -291,6 +295,40 @@
 
 	<!-- JS Plugins -->
 	<jsp:include page="/WEB-INF/views/customer/layout/js.jsp"></jsp:include>
+	
+	<!-- Add to cart -->
+	<script type="text/javascript">
+		addToCart = function(_productId, _quantity, _price, _productName, _avatar) {
+		    console.log("ID:", _productId, "Q:", _quantity, "Price:", _price, "Name:", _productName, "Avatar:", _avatar);
+			alert("Thêm "  + _quantity + " sản phẩm '" + _productName + "' vào giỏ hàng ");
+			let data = {
+				id: _productId, //lay theo id
+				quantity: _quantity,
+				price: _price,
+				name: _productName,
+				avatar: _avatar,
+			};
+				
+			//$ === jQuery
+			jQuery.ajax({
+				url : "/add-to-cart",
+				type : "POST",
+				contentType: "application/json",
+				data : JSON.stringify(data),
+				dataType : "json", //Kieu du lieu tra ve tu controller la json
+				
+				success : function(jsonResult) {
+					alert(jsonResult.code + ": " + jsonResult.message);
+					let totalProducts = jsonResult.totalCartProducts;
+					$("#totalCartProducts").html(totalProducts);
+				},
+				
+				error : function(jqXhr, textStatus, errorMessage) {
+					alert(jsonResult.code + ': Đã có lỗi xay ra...!')
+				},
+			});
+		}
+	</script>
 	
 </body>
 </html>

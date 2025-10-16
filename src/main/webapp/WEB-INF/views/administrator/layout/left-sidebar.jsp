@@ -20,12 +20,12 @@
 		</a></li>
 		<!-- End Category Nav -->
 		
-		<li class="nav-item"><a class="nav-link " href="${env }/admin/category/list">
+		<li class="nav-item"><a class="nav-link " href="${env }/admin/user/list">
 				<i class="bi bi-person"></i> <span>User</span>
 		</a></li>
 		<!-- End Category Nav -->
 		
-		<li class="nav-item"><a class="nav-link " href="${env }/admin/category/list">
+		<li class="nav-item"><a class="nav-link " href="${env }/admin/saleorder/list">
 				<i class="bi bi-bag"></i> <span>Order</span>
 		</a></li>
 		<!-- End Order Nav -->

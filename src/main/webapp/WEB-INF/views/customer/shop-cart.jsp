@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<!-- directive của JSTL -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,98 +64,46 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="cart__product__item">
-                                        <img src="${env }/customer/img/shop-cart/cp-1.jpg" alt="">
-                                        <div class="cart__product__item__title">
-                                            <h6>Chain bucket bag</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 150.0</td>
-                                    <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="cart__total">$ 300.0</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="cart__product__item">
-                                        <img src="${env }/customer/img/shop-cart/cp-2.jpg" alt="">
-                                        <div class="cart__product__item__title">
-                                            <h6>Zip-pockets pebbled tote briefcase</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 170.0</td>
-                                    <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="cart__total">$ 170.0</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="cart__product__item">
-                                        <img src="${env }/customer/img/shop-cart/cp-3.jpg" alt="">
-                                        <div class="cart__product__item__title">
-                                            <h6>Black jean</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 85.0</td>
-                                    <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="cart__total">$ 170.0</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="cart__product__item">
-                                        <img src="${env }/customer/img/shop-cart/cp-4.jpg" alt="">
-                                        <div class="cart__product__item__title">
-                                            <h6>Cotton Shirt</h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 55.0</td>
-                                    <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="cart__total">$ 110.0</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
-                                </tr>
+                            	<c:forEach var="cartProduct" items="${cart.cartProducts }">
+	                                <tr>
+	                                    <td class="cart__product__item">
+	                                        <img src="${classpath}/${cartProduct.avatar }" alt=""
+	                                        	style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 10px;">
+	                                        <div class="cart__product__item__title">
+	                                            <h6>${cartProduct.name }</h6>
+	                                        </div>
+	                                    </td>
+	                                    <td class="cart__price">
+	                                    	 <fmt:formatNumber value="${cartProduct.price}" 
+	                                    	 type="currency" currencySymbol="₫" maxFractionDigits="0" />
+										</td>
+	                                    <td>
+	                                        <div class="d-flex justify-content-center align-items-center">
+						                        <button type="button" class="btn btn-sm btn-light"
+						                                onclick="updateProductQuantity(${cartProduct.id}, -1)">-</button>
+						                        <input type="text" id="productQuantity_${cartProduct.id}"
+						                               value="${cartProduct.quantity}"
+						                               class="form-control text-center mx-2" style="width: 60px;">
+						                        <button type="button" class="btn btn-sm btn-light"
+						                                onclick="updateProductQuantity(${cartProduct.id}, 1)">+</button>
+						                    </div>
+	                                    </td>
+	                                    <td class="cart__total">
+	                                    	<span id="totalPrice_${cartProduct.id}">
+						                        <fmt:formatNumber value="${cartProduct.price * cartProduct.quantity}" 
+						                                          type="currency" currencySymbol="₫" maxFractionDigits="0" />
+						                    </span>
+	                                    </td>
+	                                    <td class="cart__close">
+	                                    	<a href="${classpath}/cart/delete/${cartProduct.id}" 
+						                       class="btn btn-danger btn-sm">
+						                        <i class="fa fa-trash"></i>
+						                    </a>
+	                                    </td>
+	                                </tr>
+	                                
+                                </c:forEach>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -182,7 +136,10 @@
                         <h6>Cart total</h6>
                         <ul>
                             <li>Subtotal <span>$ 750.0</span></li>
-                            <li>Total <span>$ 750.0</span></li>
+                            <li>Total <span id="totalCartPriceId">
+                            	<fmt:formatNumber value="${totalCartPrice }"
+                            	minFractionDigits="0"></fmt:formatNumber></span>
+                            </li>
                         </ul>
                         <a href="#" class="primary-btn">Proceed to checkout</a>
                     </div>
@@ -209,6 +166,37 @@
 
     <!-- JS Plugins -->
 	<jsp:include page="/WEB-INF/views/customer/layout/js.jsp"></jsp:include>
+	
+	<script type="text/javascript">
+		updateProductQuantity = function(_productId, _quantity) {
+			let data = {
+				id : _productId, //lay theo id
+				quantity : _quantity
+			};
+
+			//$ === jQuery
+			jQuery.ajax({
+				url : "/update-product-quantity",
+				type : "POST",
+				contentType : "application/json",
+				data : JSON.stringify(data),
+				dataType : "json", //Kieu du lieu tra ve tu controller la json
+
+				success : function(jsonResult) {
+					let totalProducts = jsonResult.totalCartProducts; 
+					//Viet lai so luong sau khi bam nut -, +
+					$("#productQuantity_" + jsonResult.productId).val(jsonResult.newQuantity);
+					$("#totalCartPriceId").html(jsonResult.totalCartPrice); 
+					$("#totalPrice_" + jsonResult.productId).html(jsonResult.totalPrice);
+					$("#totalCartProducts").html(jsonResult.totalCartProducts);
+				},
+
+				error : function(jqXhr, textStatus, errorMessage) {
+					alert("An error occur");
+				}
+			});
+		}
+	</script>
 	
 </body>
 
