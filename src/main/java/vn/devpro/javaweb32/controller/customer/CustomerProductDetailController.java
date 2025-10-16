@@ -9,8 +9,8 @@ import vn.devpro.javaweb32.controller.BaseController;
 @Controller
 public class CustomerProductDetailController extends BaseController {
 
-	@RequestMapping(value = "/product-detail", method = RequestMethod.GET)
-	public String productDetail() {
-		return "customer/product-detail";
-	}
+	/*
+	 * @RequestMapping(value = "/product", method = RequestMethod.GET) public String
+	 * productDetail() { return "customer/product"; }
+	 */
 }
