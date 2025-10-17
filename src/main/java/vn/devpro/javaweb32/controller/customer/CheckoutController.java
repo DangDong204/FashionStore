@@ -100,7 +100,7 @@ public class CheckoutController extends BaseController{
 	    }
 
 	    // 4️: Xóa giỏ hàng sau khi đặt hàng thành công
-//	    session.removeAttribute("cart");
+	    session.removeAttribute("cart");
 
 	    // 5️: Chuyển hướng đến trang xác nhận
 	    return "redirect:/success";
