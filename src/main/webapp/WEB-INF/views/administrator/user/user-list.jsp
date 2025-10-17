@@ -57,7 +57,7 @@
                   <th scope="col">Password</th>
                   <th scope="col">Họ tên</th>
                   <th scope="col">Số điện thoại</th>
-                  <th scope="col">Email</th>
+                  <th scope="col">Quyền</th>
                   <th scope="col">Status</th>
                   <th scope="col">Thao tác</th>
                 </tr>
@@ -85,46 +85,52 @@
                       </td>
                       
 			          <td>
-<%-- 			          	<button type="button"
-						        class="btn btn-primary btn-sm text-white"
-						        title="Xem chi tiết"
-						        data-bs-toggle="modal"
-						        data-bs-target="#detailUserModal"
-						        data-id="${category.id}"
-						        data-name="${category.name}"
-						        data-createby="${category.createBy}"
-						        data-updateby="${category.updateBy}"
-						        data-createdate="<fmt:formatDate value='${category.createDate}' pattern='dd-MM-yyyy'/>"
-						        data-updatedate="<fmt:formatDate value='${category.updateDate}' pattern='dd-MM-yyyy'/>"
-						        data-status="${category.status}"
-						        data-desc="${category.description}">
-						  <i class="ri-eye-fill"></i>
-						</button> --%>
-<%-- 			          	
-			            <button type="button" 
-						        class="btn btn-warning btn-sm" 
-						        title="Chỉnh sửa"
-						        data-bs-toggle="modal" 
-						        data-bs-target="#editUserModal"
-						        data-id="${category.id}"
-						        data-name="${category.name}"
-						        data-createby="${category.createBy}"
-						        data-updateby="${category.updateBy}"
-						        data-createdate="<fmt:formatDate value='${category.createDate}' pattern='yyyy-MM-dd'/>"
-						        data-updatedate="<fmt:formatDate value='${category.updateDate}' pattern='yyyy-MM-dd'/>"
-						        data-status="${category.status}"
-						        data-desc="${category.description}">
-						  <i class="ri-pencil-fill"></i>
+			          	<button type="button"
+						    class="btn btn-primary btn-sm text-white"
+						    title="Xem chi tiết"
+						    data-bs-toggle="modal"
+						    data-bs-target="#detailUserModal"
+						    data-id="${user.id}"
+						    data-username="${user.username}"
+						    data-name="${user.name}"
+						    data-email="${user.email}"
+						    data-mobile="${user.mobile}"
+						    data-address="${user.address}"
+						    data-desc="${user.description}"
+						    data-status="${user.status}"
+						    data-createby="${user.createBy}"
+						    data-updateby="${user.updateBy}"
+						    data-avatar="${env }/${user.avatar}"
+						    data-createdate="<fmt:formatDate value='${user.createDate}' pattern='dd-MM-yyyy HH:mm'/>"
+						    data-updatedate="<fmt:formatDate value='${user.updateDate}' pattern='dd-MM-yyyy HH:mm'/>"
+						    data-roles="${user.roleNames}">
+						    <i class="ri-eye-fill"></i>
 						</button>
- --%>
-<%-- 
-			            <a href="${env }/admin/user/delete/${category.id}"
+			          		          	
+			            <button type="button"
+						    class="btn btn-warning btn-sm text-white"
+						    title="Sửa user"
+						    data-bs-toggle="modal"
+						    data-bs-target="#editUserModal"
+						    data-id="${user.id}"
+						    data-username="${user.username}"
+						    data-name="${user.name}"
+						    data-email="${user.email}"
+						    data-mobile="${user.mobile}"
+						    data-address="${user.address}"
+						    data-desc="${user.description}"
+						    data-status="${user.status}"
+						    data-avatar="${env}/${user.avatar}"
+						    data-roleIds="<c:forEach var='ur' items='${user.userRoles}'>${ur.role.id},</c:forEach>">
+						    <i class="ri-edit-2-fill"></i>
+						</button>
+
+			            <a href="${env }/admin/user/delete/${user.id}"
 						   class="btn btn-danger btn-sm"
 						   title="Xóa"
 						   onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?');">
 						  <i class="ri-delete-bin-5-fill"></i>
 						</a>
- --%>
 			          </td>
 			        </tr>
 			      </c:forEach>
@@ -140,11 +146,11 @@
 
 	</main>
 	<!-- End #main -->
-	<%-- 
+	
 	<jsp:include page="/WEB-INF/views/administrator/user/user-read.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/administrator/user/user-add.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/administrator/user/user-edit.jsp"></jsp:include>
-	 --%>
+	
 	
 	
 	<!-- Footer - File -->

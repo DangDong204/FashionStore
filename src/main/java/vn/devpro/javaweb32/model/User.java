@@ -1,9 +1,14 @@
 package vn.devpro.javaweb32.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -50,6 +55,9 @@ public class User extends BaseModel{
 		this.avatar = avatar;
 		this.description = description;
 	}
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<UserRole> userRoles = new ArrayList<>();
 
 	public String getUsername() {
 		return username;
@@ -114,5 +122,27 @@ public class User extends BaseModel{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-    
+
+	public List<UserRole> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(List<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+	
+	// Thêm phương thức lấy tên role:
+	public String getRoleNames() {
+	    if (userRoles == null || userRoles.isEmpty()) return "";
+	    StringBuilder sb = new StringBuilder();
+	    for (UserRole ur : userRoles) {
+	        if (ur.getRole() != null) {
+	            if (sb.length() > 0) sb.append(", ");
+	            sb.append(ur.getRole().getName());
+	        }
+	    }
+	    return sb.toString();
+	}
+
+	
 }
