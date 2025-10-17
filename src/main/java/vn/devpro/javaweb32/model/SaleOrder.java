@@ -49,6 +49,11 @@ public class SaleOrder extends BaseModel{
 
 	@Column(name = "description", length = 500)
 	private String description;
+	
+	// ---------- Mapping many-to-one: SaleOrder - Voucher ----------
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "voucher_id", nullable = true)
+	private Voucher voucher;
 
 	public SaleOrder() {
 		super();
@@ -56,7 +61,8 @@ public class SaleOrder extends BaseModel{
 
 	public SaleOrder(Integer id, Integer createBy, Integer updateBy, Date createDate, Date updateDate, Boolean status,
 			User user, String code, BigDecimal total, String customerName, String customerMobile, String customerEmail,
-			String customerAddress, Integer orderStatus, Date deliveryDate, String description) {
+			String customerAddress, Integer orderStatus, Date deliveryDate, String description, Voucher voucher,
+			List<SaleOrderProduct> saleOrderProducts) {
 		super(id, createBy, updateBy, createDate, updateDate, status);
 		this.user = user;
 		this.code = code;
@@ -68,6 +74,8 @@ public class SaleOrder extends BaseModel{
 		this.orderStatus = orderStatus;
 		this.deliveryDate = deliveryDate;
 		this.description = description;
+		this.voucher = voucher;
+		this.saleOrderProducts = saleOrderProducts;
 	}
 
 	public User getUser() {
@@ -150,6 +158,24 @@ public class SaleOrder extends BaseModel{
 		this.description = description;
 	}
 	
+	public Voucher getVoucher() {
+		return voucher;
+	}
+
+	public void setVoucher(Voucher voucher) {
+		this.voucher = voucher;
+	}
+
+	public List<SaleOrderProduct> getSaleOrderProducts() {
+		return saleOrderProducts;
+	}
+
+	public void setSaleOrderProducts(List<SaleOrderProduct> saleOrderProducts) {
+		this.saleOrderProducts = saleOrderProducts;
+	}
+
+
+
 	@OneToMany(mappedBy = "saleOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<SaleOrderProduct> saleOrderProducts = new ArrayList<>();
 

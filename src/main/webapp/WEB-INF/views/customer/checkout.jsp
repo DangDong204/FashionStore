@@ -121,10 +121,22 @@
 							</div>
 							<div class="checkout__order__total">
 								<ul>
-									<li>Subtotal <span>$ 750.0</span></li>
-									<li>Tổng cộng <span> <fmt:formatNumber
-												value="${totalCartPrice }" minFractionDigits="0"></fmt:formatNumber></span>
-									</li>
+									<li>Tổng giá trị <span>
+							            <fmt:formatNumber value="${cart.totalCartPrice()}" minFractionDigits="0"/> ₫
+							        </span></li>
+							        
+							        <%-- Hiển thị dòng giảm giá nếu có voucher --%>
+							        <c:if test="${not empty appliedVoucher}">
+							            <li>Giảm giá 
+							                <span style="color: #ff0000;">
+							                    -<fmt:formatNumber value="${discountValue}" minFractionDigits="0"/> ₫
+							                </span>
+							            </li>
+							        </c:if>
+							        
+							        <li>Tổng thanh toán <span style="font-weight: bold; font-size: 18px;">
+							            <fmt:formatNumber value="${totalCartPrice}" minFractionDigits="0"/> ₫
+							        </span></li>
 								</ul>
 							</div>
 

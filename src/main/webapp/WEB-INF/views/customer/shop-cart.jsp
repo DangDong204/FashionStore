@@ -137,11 +137,14 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="discount__content">
-                        <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your coupon code">
-                            <button type="submit" class="site-btn">Apply</button>
-                        </form>
+                        <h6>Mã giảm giá</h6>
+                        <form id="voucherForm">
+						    <input type="text" id="voucherCode" placeholder="Nhập mã giảm giá">
+						    <button type="button" class="site-btn" onclick="applyVoucher()">Áp dụng</button>
+						</form>
+						
+						<p id="voucherMessage" style="margin-top:10px;"></p>
+						                        
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-2">
@@ -245,6 +248,33 @@
 		        },
 		        error: function() {
 		            alert("Xóa sản phẩm thất bại!");
+		        }
+		    });
+		}
+	</script>
+	
+	<script>
+		function applyVoucher() {
+		    let code = $("#voucherCode").val().trim();
+		    if (code === "") {
+		        $("#voucherMessage").text("Vui lòng nhập mã giảm giá!");
+		        return;
+		    }
+	
+		    $.ajax({
+		        url: "/apply-voucher",
+		        type: "POST",
+		        data: { code: code },
+		        success: function(response) {
+		            if (response.valid) {
+		                $("#voucherMessage").text("Áp dụng thành công! Giảm " + response.discountText);
+		                $("#totalCartPriceId").html(response.newTotalFormatted);
+		            } else {
+		                $("#voucherMessage").text(response.message);
+		            }
+		        },
+		        error: function() {
+		            $("#voucherMessage").text("Lỗi khi áp dụng mã giảm giá!");
 		        }
 		    });
 		}

@@ -30,6 +30,11 @@
 		</a></li>
 		<!-- End Order Nav -->
 		
+		<li class="nav-item"><a class="nav-link " href="${env }/admin/voucher/list">
+				<i class="bi bi-cash-coin"></i> <span>Voucher</span>
+		</a></li>
+		<!-- End Order Nav -->
+		
 		<li class="nav-item"><a class="nav-link" href="${env }/admin/contact/list"> 
 			<i class="bi bi-envelope"></i> <span>Contact</span>
 		</a></li>
