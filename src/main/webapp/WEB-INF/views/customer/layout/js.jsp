@@ -11,6 +11,10 @@
 <script src="${env }/customer/js/jquery.nicescroll.min.js"></script>
 <script src="${env }/customer/js/main.js"></script>
 
+
+<!-- Thêm JS - Filter -->
+<script src="${env }/customer/js/jquery-ui.js"></script>
+
 <!-- Them JS  - Slider-->
 <script src="${env }/customer/js/slick/jquery-3.7.1.js"></script>
 <script src="${env }/customer/js/slick/slick.min.js"></script>
@@ -36,4 +40,46 @@
             nextArrow: '<button type="button" class="slick-next custom-next"><i class="fa-solid fa-chevron-right"></i></button>',
         });
     });
+</script>
+
+<script>
+$(document).ready(function() {
+    // Xử lý sự kiện khi nhấn Enter trong ô tìm kiếm
+    $('#search-input').on('keypress', function(e) {
+        if (e.which === 13) { // Enter key
+            e.preventDefault();
+            performSearch();
+        }
+    });
+    
+    // Xử lý sự kiện khi click icon search (nếu cần)
+    $('#searchIcon').on('click', function() {
+        // Mở popup search (nếu template đã có sẵn chức năng này)
+        $('.search-model').addClass('active');
+        $('#search-input').focus();
+    });
+    
+    // Hàm thực hiện tìm kiếm
+    function performSearch() {
+        var keyword = $('#search-input').val().trim();
+        if (keyword !== '') {
+            // Chuyển hướng đến trang shop với từ khóa tìm kiếm
+            window.location.href = '${env}/shop?keyword=' + encodeURIComponent(keyword);
+        } else {
+            // Nếu từ khóa rỗng, chuyển đến trang shop không lọc
+            window.location.href = '${env}/shop';
+        }
+    }
+    
+    // Đóng popup search khi click nút close
+    $('.search-close-switch').on('click', function() {
+        $('.search-model').removeClass('active');
+    });
+    
+    // Hiển thị từ khóa tìm kiếm hiện tại (nếu có)
+    var currentKeyword = '${keyword}';
+    if (currentKeyword) {
+        $('#search-input').val(currentKeyword);
+    }
+});
 </script>

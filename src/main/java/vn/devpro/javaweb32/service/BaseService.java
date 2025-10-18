@@ -38,7 +38,7 @@ public abstract class BaseService <Model extends BaseModel>{
 	public List<Model> findAll() {
 		Table table = clazz().getAnnotation(Table.class);
 		return (List<Model>) entityManager.createNativeQuery(
-				"SELECT * FROM " + table.name(), 
+				"SELECT * FROM " + table.name() + " ORDER BY id DESC", 
 				clazz()).getResultList();
 	}
 	

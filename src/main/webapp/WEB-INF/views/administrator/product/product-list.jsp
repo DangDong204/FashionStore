@@ -53,7 +53,8 @@
 											align-middle datatable text-center">
 							  <thead class="table-light text-center">
 							    <tr>
-							      <th scope="col">Id</th>
+							      <th scope="col">No</th>
+							      <th scope="col">Danh mục</th>
 							      <th scope="col">Tên sản phẩm</th>
 							      <th scope="col">Hình ảnh</th>
 							      <th scope="col">Giá</th>
@@ -65,9 +66,10 @@
 							  </thead>
 							
 							  <tbody class="text-center">
-							    <c:forEach var="product" items="${products}">
+							    <c:forEach var="product" items="${products}" varStatus="loop">
 							      <tr>
-							        <td>${product.id}</td>
+							        <td>${loop.index + 1}</td>
+							        <td>${product.category.name}</td>
 							        <td>${product.name}</td>
 							        <td>
 									  <c:choose>

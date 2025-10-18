@@ -15,16 +15,15 @@
                         <li class="active"><a href="${env }/index">Home</a></li>
                         <li><a href="#">Women’s</a></li>
                         <li><a href="#">Men’s</a></li>
-                        <li><a href="./shop.html">Shop</a></li>
+                        <li><a href="${env }/shop">Shop</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="./product-details.html">Product Details</a></li>
                                 <li><a href="${env }/cart">Shop Cart</a></li>
-                                <li><a href="./checkout.html">Checkout</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Blog</a></li>
+                        <li><a href="${env }/checkout">Checkout</a></li>
                         <li><a href="${env }/contact">Contact</a></li>
                     </ul>
                 </nav>
@@ -36,7 +35,7 @@
                         <a href="#">Register</a>
                     </div>
                     <ul class="header__right__widget">
-                        <li><span class="icon_search search-switch"></span></li>
+                        <li><span class="icon_search search-switch id="searchIcon""></span></li>
                         <li><a href="#"><span class="icon_heart_alt"></span>
                             <div class="tip">2</div>
                         </a></li>

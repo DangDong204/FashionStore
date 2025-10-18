@@ -89,12 +89,6 @@
 			            </div>
 			        </div>
 			    </c:forEach>
-	            
-	            
-	            
-	            
-	            
-	            
 	        </div>
 	    </div>
 	</section>
@@ -282,53 +276,12 @@
 	<jsp:include page="/WEB-INF/views/customer/layout/footer.jsp"></jsp:include>
 	<!-- End - Footer -->
 	
-	<!-- Search Begin -->
-	<div class="search-model">
-	    <div class="h-100 d-flex align-items-center justify-content-center">
-	        <div class="search-close-switch">+</div>
-	        <form class="search-model-form">
-	            <input type="text" id="search-input" placeholder="Search here.....">
-	        </form>
-	    </div>
-	</div>
-	<!-- Search End -->
+	<jsp:include page="/WEB-INF/views/customer/layout/search.jsp"></jsp:include>
 
 	<!-- JS Plugins -->
 	<jsp:include page="/WEB-INF/views/customer/layout/js.jsp"></jsp:include>
 	
-	<!-- Add to cart -->
-	<script type="text/javascript">
-		addToCart = function(_productId, _quantity, _price, _productName, _avatar) {
-		    console.log("ID:", _productId, "Q:", _quantity, "Price:", _price, "Name:", _productName, "Avatar:", _avatar);
-			alert("Thêm "  + _quantity + " sản phẩm '" + _productName + "' vào giỏ hàng ");
-			let data = {
-				id: _productId, //lay theo id
-				quantity: _quantity,
-				price: _price,
-				name: _productName,
-				avatar: _avatar,
-			};
-				
-			//$ === jQuery
-			jQuery.ajax({
-				url : "/add-to-cart",
-				type : "POST",
-				contentType: "application/json",
-				data : JSON.stringify(data),
-				dataType : "json", //Kieu du lieu tra ve tu controller la json
-				
-				success : function(jsonResult) {
-					alert(jsonResult.code + ": " + jsonResult.message);
-					let totalProducts = jsonResult.totalCartProducts;
-					$("#totalCartProducts").html(totalProducts);
-				},
-				
-				error : function(jqXhr, textStatus, errorMessage) {
-					alert(jsonResult.code + ': Đã có lỗi xay ra...!')
-				},
-			});
-		}
-	</script>
+	<jsp:include page="/WEB-INF/views/customer/layout/js-addtocart.jsp"></jsp:include>
 	
 </body>
 </html>
