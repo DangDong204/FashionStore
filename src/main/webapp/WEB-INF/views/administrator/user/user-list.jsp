@@ -54,7 +54,7 @@
                   <!-- <th scope="col">No</th> -->
                   <th scope="col">Id</th>
                   <th scope="col">Username</th>
-                  <th scope="col">Password</th>
+                 <!--  <th scope="col">Password</th> -->
                   <th scope="col">Họ tên</th>
                   <th scope="col">Số điện thoại</th>
                   <th scope="col">Quyền</th>
@@ -68,7 +68,7 @@
 			          <%-- <td>${loop.index + 1}</td> --%>
 			          <td>${user.id }</td>
 			          <td>${user.username }</td>
-			          <td>${user.password }</td>
+			          <%-- <td>${user.password }</td> --%>
 			          <td>${user.name }</td>
 			          <td>${user.mobile }</td>
 			          <td>${user.email }</td>

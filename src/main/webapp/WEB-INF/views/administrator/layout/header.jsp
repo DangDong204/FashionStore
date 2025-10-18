@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -209,8 +211,7 @@
 					</li>
 
 					<li><a class="dropdown-item d-flex align-items-center"
-						href="#"> <i class="bi bi-box-arrow-right"></i> <span>Sign
-								Out</span>
+						href="${env }/logout"> <i class="bi bi-box-arrow-right"></i> <span>Đăng xuất</span>
 					</a></li>
 
 				</ul>
