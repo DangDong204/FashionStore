@@ -66,13 +66,15 @@
 									<p>
 										Họ và tên <span>*</span>
 									</p>
-									<input type="text" name="customerName" placeholder="Nguyễn Văn A" required>
+									<input type="text" name="customerName" placeholder="Nguyễn Văn A" 
+											value="${loginedUser.name}" required>
 								</div>
 								<div class="checkout__form__input">
 									<p>
 										Address <span>*</span>
 									</p>
-									<input type="text" name="customerAddress" placeholder="Số 26 đường Kim Ngọc" required>
+									<input type="text" name="customerAddress" placeholder="Số 26 đường Kim Ngọc" 
+											value="${loginedUser.address}" required>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6">
@@ -80,7 +82,8 @@
 									<p>
 										Phone <span>*</span>
 									</p>
-									<input type="text" name="customerPhone" placeholder="+084" required>
+									<input type="text" name="customerPhone" placeholder="+084" 
+											value="${loginedUser.mobile}" required>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6">
@@ -88,7 +91,8 @@
 									<p>
 										Email <span>*</span>
 									</p>
-									<input type="text" name="customerEmail" placeholder="demo@gmail.com">
+									<input type="text" name="customerEmail" placeholder="demo@gmail.com"
+										value="${loginedUser.email}">
 								</div>
 							</div>
 

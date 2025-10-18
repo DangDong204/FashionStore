@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Service;
@@ -58,6 +59,24 @@ public abstract class BaseService <Model extends BaseModel>{
 	        entityManager.remove(entity);
 	    }
 	}
-
+	
+	// Bổ sung 18/10: Spring Security
+	@SuppressWarnings("unchecked")
+	public Model getEntityByNativeSQL(String sql) {
+		
+		try {
+			Query query = entityManager.createNativeQuery(sql, clazz());
+			List<Model> list = query.getResultList();
+			if (list != null && list.size() > 0) {
+				return list.get(0);	
+			}
+			return null;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
 	
 }

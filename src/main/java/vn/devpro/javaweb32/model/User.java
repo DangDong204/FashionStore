@@ -1,8 +1,10 @@
 package vn.devpro.javaweb32.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,9 +13,12 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
 @Table(name = "tbl_user")
-public class User extends BaseModel{
+public class User extends BaseModel implements UserDetails{
 	@Column(name = "username", nullable = false, length = 120)
     private String username;
 
@@ -56,7 +61,7 @@ public class User extends BaseModel{
 		this.description = description;
 	}
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<UserRole> userRoles = new ArrayList<>();
 
 	public String getUsername() {
@@ -142,6 +147,38 @@ public class User extends BaseModel{
 	        }
 	    }
 	    return sb.toString();
+	}
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// Lấy danh sách roles từ userRoles
+        return this.userRoles.stream()
+                .map(UserRole::getRole)
+                .collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 	
