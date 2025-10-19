@@ -83,7 +83,21 @@
 			                <div class="product__item__text">
 			                    <h6><a href="${env}/product/${product.id}">${product.name}</a></h6>
 			                    <div class="product__price">
-			                        <fmt:formatNumber value="${product.price}" type="number" minFractionDigits="0" />đ
+			                        <c:choose>
+								        <c:when test="${product.salePrice != null}">
+								            <!-- Có khuyến mãi: hiển thị giá gốc gạch ngang + giá khuyến mãi -->
+								            <span style="text-decoration: none; color: #e53637; font-weight: bold;">
+								                <fmt:formatNumber value="${product.price}" type="number" minFractionDigits="0" />đ
+								            </span>
+								            <span style="text-decoration: line-through; color: #999; font-size: 14px;">
+								                <fmt:formatNumber value="${product.salePrice}" type="number" minFractionDigits="0" />đ
+								            </span>
+								        </c:when>
+								        <c:otherwise>
+								            <!-- Không có khuyến mãi: chỉ hiển thị giá bán -->
+								            <fmt:formatNumber value="${product.price}" type="number" minFractionDigits="0" />đ
+								        </c:otherwise>
+								    </c:choose>
 			                    </div>
 			                </div>
 			            </div>

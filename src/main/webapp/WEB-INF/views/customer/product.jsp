@@ -85,12 +85,12 @@
                 <div class="col-lg-6">
                     <div class="product__details__text">
                         <h3>${product.name}</h3>
-                        <div class="product__details__price">
-                        	<fmt:formatNumber value="${product.price}" type="number" minFractionDigits="0" />đ
-					        <c:if test="${product.salePrice != null}">
-					            <span><fmt:formatNumber value="${product.salePrice}" type="number" minFractionDigits="0" />đ</span>
-					        </c:if>
-                        </div>
+	                        <div class="product__details__price">
+	                        	<fmt:formatNumber value="${product.price}" type="number" minFractionDigits="0" />đ
+						        <c:if test="${product.salePrice != null}">
+						            <span><fmt:formatNumber value="${product.salePrice}" type="number" minFractionDigits="0" />đ</span>
+						        </c:if>
+	                        </div>
                         <p>${product.shortDescription }</p>
                         <div class="product__details__button">
                             <div class="quantity">

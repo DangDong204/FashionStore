@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import vn.devpro.javaweb32.controller.BaseController;
 import vn.devpro.javaweb32.dto.Cart;
 import vn.devpro.javaweb32.dto.CartProduct;
+import vn.devpro.javaweb32.model.Product;
 import vn.devpro.javaweb32.model.SaleOrder;
 import vn.devpro.javaweb32.model.SaleOrderProduct;
 import vn.devpro.javaweb32.model.User;
@@ -126,6 +127,12 @@ public class CheckoutController extends BaseController{
 
 	    // 3️: Lưu các sản phẩm trong giỏ hàng vào bảng sale_order_product
 	    for (CartProduct p : cart.getCartProducts()) {
+	    	// 3.1. Xử lý - số lượng tồn kho:
+	    	Product product = ps.getById(p.getId());
+	    	product.setStockQuantity(product.getStockQuantity() - p.getQuantity().intValue());
+	        ps.saveOrUpdate(product); // Lưu cập nhật tồn kho
+	    	
+	    	// 3.2. Xử lý thêm vào bảng sale_order_product
 	        SaleOrderProduct saleOrderProduct = new SaleOrderProduct();
 	        saleOrderProduct.setSaleOrder(saleorder);
 	        saleOrderProduct.setProduct(ps.getById(p.getId()));

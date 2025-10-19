@@ -59,4 +59,16 @@ public class BaseController {
 		}
 		return false;
 	}
+	
+	// Thêm phương thức mới để lấy user đã đăng nhập (dùng trong controller)
+	public User getUserLogined() {
+		Object loginedUser = 
+				SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (loginedUser != null && loginedUser instanceof UserDetails) {
+			User user = (User) loginedUser;
+			return user;
+		}
+		return null; // Trả về null nếu không có user đăng nhập
+	}
 }

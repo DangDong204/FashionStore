@@ -8,7 +8,7 @@
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 	
-	<title>SWE - User</title>
+	<title>SWE - SaleOrder</title>
 	<meta content="" name="description">
 	<meta content="" name="keywords">
 	
@@ -47,82 +47,116 @@
               </button>
             </div>
 
-            <!-- Bảng hiển thị danh mục -->
+            <!-- Bảng hiển thị đơn hàng -->
             <table class="table table-striped table-hover table-bordered align-middle datatable">
               <thead class="table-light text-center">
                 <tr>
-                  <!-- <th scope="col">No</th> -->
-                  <th scope="col">Id</th>
-                  <th scope="col">Mã KH</th>
-                  <th scope="col">Code</th>
+                  <th scope="col">No</th>
+                  <th scope="col">Tên khách hàng</th>
+                  <th scope="col">Mã đơn hàng</th>
                   <th scope="col">Tổng giá trị</th>
-                  
+                  <th scope="col">Trạng thái đơn hàng</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody class="text-center">
          		<c:forEach var="saleorder" items="${saleorders }" varStatus="loop">
 			        <tr>
-			          <%-- <td>${loop.index + 1}</td> --%>
-			          <td>${saleorder.id }</td>
-			          <td>${saleorder.user.id }</td>
-			          <td>${saleorder.code }</td>
-			          <td>${saleorder.total }</td>
-			      
-			         	
-			          <td class="text-center">
-                   		<c:choose>
-                   			<c:when test="${saleorder.status }">
-          						<i class="bi bi-check-circle-fill text-success" title="Active"></i>
-                   			</c:when>
-                   			<c:otherwise>
-          						<i class="bi bi-x-circle-fill text-danger" title="Inactive"></i>
-                   			</c:otherwise>
-                   		</c:choose>
-                      </td>
-                      
-			          <td>
-<%-- 			          	<button type="button"
-						        class="btn btn-primary btn-sm text-white"
-						        title="Xem chi tiết"
-						        data-bs-toggle="modal"
-						        data-bs-target="#detailSaleOrderModal"
-						        data-id="${category.id}"
-						        data-name="${category.name}"
-						        data-createby="${category.createBy}"
-						        data-updateby="${category.updateBy}"
-						        data-createdate="<fmt:formatDate value='${category.createDate}' pattern='dd-MM-yyyy'/>"
-						        data-updatedate="<fmt:formatDate value='${category.updateDate}' pattern='dd-MM-yyyy'/>"
-						        data-status="${category.status}"
-						        data-desc="${category.description}">
-						  <i class="ri-eye-fill"></i>
-						</button> --%>
-<%-- 			          	
-			            <button type="button" 
-						        class="btn btn-warning btn-sm" 
-						        title="Chỉnh sửa"
-						        data-bs-toggle="modal" 
-						        data-bs-target="#editSaleOrderModal"
-						        data-id="${category.id}"
-						        data-name="${category.name}"
-						        data-createby="${category.createBy}"
-						        data-updateby="${category.updateBy}"
-						        data-createdate="<fmt:formatDate value='${category.createDate}' pattern='yyyy-MM-dd'/>"
-						        data-updatedate="<fmt:formatDate value='${category.updateDate}' pattern='yyyy-MM-dd'/>"
-						        data-status="${category.status}"
-						        data-desc="${category.description}">
-						  <i class="ri-pencil-fill"></i>
-						</button>
- --%>
-<%-- 
-			            <a href="${env }/admin/saleorder/delete/${category.id}"
-						   class="btn btn-danger btn-sm"
-						   title="Xóa"
-						   onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?');">
-						  <i class="ri-delete-bin-5-fill"></i>
-						</a>
- --%>
-			          </td>
-			        </tr>
+						<td>${loop.index + 1}</td>
+						<%-- <td>${saleorder.user.name }</td> --%>
+						<td>${saleorder.customerName }</td>
+						<td>${saleorder.code }</td>
+						<td><fmt:formatNumber value="${saleorder.total }"
+								type="number" minFractionDigits="0" /> ₫</td>
+						<td>
+							<c:choose>
+								<c:when test="${saleorder.orderStatus == 0}">
+									<span class="badge bg-secondary"> <i
+										class="bi bi-clock-history me-1"></i>Chờ phê duyệt
+									</span>
+								</c:when>
+								<c:when test="${saleorder.orderStatus == 1}">
+									<span class="badge bg-primary"> <i
+										class="bi bi-check-circle me-1"></i>Xác nhận
+									</span>
+								</c:when>
+								<c:when test="${saleorder.orderStatus == 2}">
+									<span class="badge bg-warning text-dark"> <i
+										class="bi bi-truck me-1"></i>Chờ đơn vị vận chuyển
+									</span>
+								</c:when>
+								<c:when test="${saleorder.orderStatus == 3}">
+									<span class="badge bg-info"> <i
+										class="bi bi-box-seam me-1"></i>Đang giao hàng
+									</span>
+								</c:when>
+								<c:when test="${saleorder.orderStatus == 4}">
+									<span class="badge bg-success"> <i
+										class="bi bi-check-lg me-1"></i>Đã giao hàng
+									</span>
+								</c:when>
+								<c:when test="${saleorder.orderStatus == 5}">
+									<span class="badge bg-danger"> <i
+										class="bi bi-arrow-return-left me-1"></i>Trả hàng
+									</span>
+								</c:when>
+								<c:otherwise>
+									<span class="badge bg-dark"> <i
+										class="bi bi-question-circle me-1"></i>Không xác định
+									</span>
+								</c:otherwise>
+							</c:choose>
+						</td>
+
+						<td class="text-center">
+							<c:choose>
+								<c:when test="${saleorder.status }">
+									<i class="bi bi-check-circle-fill text-success"
+										title="Active"></i>
+								</c:when>
+								<c:otherwise>
+									<i class="bi bi-x-circle-fill text-danger"
+										title="Inactive"></i>
+								</c:otherwise>
+							</c:choose>
+						</td>
+
+						<td>
+							<!-- Nút Xem chi tiết -->
+							<button type="button"
+								class="btn btn-primary btn-sm text-white"
+								title="Xem chi tiết" data-bs-toggle="modal"
+								data-bs-target="#detailSaleOrderModal"
+								data-id="${saleorder.id}" data-code="${saleorder.code}"
+								data-customername="${saleorder.customerName}"
+								data-total="${saleorder.total}"
+								data-orderstatus="${saleorder.orderStatus}"
+								data-description="${saleorder.description}">
+								<i class="ri-eye-fill"></i>
+							</button> 
+							<!-- Nút Chỉnh sửa trạng thái -->
+							<!-- Trong phần action buttons -->
+<button type="button" class="btn btn-warning btn-sm"
+    title="Chỉnh sửa trạng thái" data-bs-toggle="modal"
+    data-bs-target="#editSaleOrderModal"
+    data-id="${saleorder.id}" 
+    data-code="${saleorder.code}"
+    data-customername="${saleorder.customerName}"
+    data-total="${saleorder.total}"
+    data-orderstatus="${saleorder.orderStatus}"
+    data-description="${saleorder.description}">
+    <i class="ri-pencil-fill"></i>
+</button>
+							
+							<!-- Nút Xóa (nếu cần) --> 
+							<a href="${env }/admin/saleorder/delete/${saleorder.id}"
+								class="btn btn-danger btn-sm" title="Xóa"
+								onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?');">
+							<i class="ri-delete-bin-5-fill"></i>
+							</a>
+						</td>
+					</tr>
 			      </c:forEach>
               </tbody>
             </table>
@@ -139,8 +173,8 @@
 	<%-- 
 	<jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-read.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-add.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-edit.jsp"></jsp:include>
 	 --%>
+	<jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-edit.jsp"></jsp:include>
 	
 	
 	<!-- Footer - File -->

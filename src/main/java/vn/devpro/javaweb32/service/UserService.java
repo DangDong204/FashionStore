@@ -18,4 +18,11 @@ public class UserService extends BaseService<User>{
 		String sql = "SELECT * FROM tbl_user WHERE status = 1";
 		return executeNativeSql(sql);
 	}
+	
+	// Lấy số lượng user
+    public Long countAllUsers() {
+        String sql = "SELECT COUNT(*) FROM tbl_user";
+        Object result = entityManager.createNativeQuery(sql).getSingleResult();
+        return result != null ? ((Number) result).longValue() : 0L;
+    }
 }
