@@ -28,6 +28,9 @@ public class SaleOrder extends BaseModel{
 
 	@Column(name = "total", precision = 15, scale = 2)
 	private BigDecimal total = BigDecimal.ZERO;
+	
+	@Column(name = "payment_method")
+	private Integer paymentMethod = 0; // 0: COD, 1: VNPay
 
 	@Column(name = "customer_name", nullable = false, length = 300)
 	private String customerName;
@@ -100,6 +103,14 @@ public class SaleOrder extends BaseModel{
 
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+
+	public Integer getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(Integer paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 
 	public String getCustomerName() {

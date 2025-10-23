@@ -1,6 +1,7 @@
 package vn.devpro.javaweb32.controller.customer;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -74,10 +75,11 @@ public class CheckoutController extends BaseController{
         return "customer/checkout";
     }
 	
-	@RequestMapping(value = "checkout", method = RequestMethod.POST)
-	public String placeOrder(final HttpServletRequest request) {
+	// Thêm phương thức POST mới cho checkout
+	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
+	public String placeOrder(final HttpServletRequest request, final Model model) {
 	    
-		HttpSession session = request.getSession();
+	    HttpSession session = request.getSession();
 	    Cart cart = (Cart) session.getAttribute("cart");
 	    if (cart == null || cart.getCartProducts().isEmpty()) {
 	        return "redirect:/cart";
@@ -88,6 +90,7 @@ public class CheckoutController extends BaseController{
 	    String address = request.getParameter("customerAddress");
 	    String phone = request.getParameter("customerPhone");
 	    String email = request.getParameter("customerEmail");
+	    String paymentMethod = request.getParameter("paymentMethod");
 	    
 	    // Tính tổng tiền cuối cùng (có thể đã được giảm giá)
 	    BigDecimal finalTotal = cart.totalCartPrice();
@@ -96,61 +99,135 @@ public class CheckoutController extends BaseController{
 
 	    if (appliedVoucher != null && discountValue != null) {
 	        finalTotal = cart.totalCartPrice().subtract(discountValue);
-	        // Đảm bảo tổng tiền không âm
 	        if (finalTotal.compareTo(BigDecimal.ZERO) < 0) {
 	            finalTotal = BigDecimal.ZERO;
 	        }
 	    }
 	    
-	    // 1️: Tạo đối tượng SaleOrder
-	    SaleOrder saleorder = new SaleOrder();
+	    // KIỂM TRA: Nếu đã có đơn hàng chờ thanh toán trong session, sử dụng lại
+	    SaleOrder saleorder = (SaleOrder) session.getAttribute("pendingOrder");
+	    boolean isExistingOrder = (saleorder != null);
+	    
+	    if (saleorder == null) {
+	        // Tạo đối tượng SaleOrder mới
+	        saleorder = new SaleOrder();
+	        saleorder.setCode(System.currentTimeMillis() + phone); // mã đơn hàng
+	    }
+	    
+	    // Cập nhật thông tin đơn hàng (cả mới và cũ)
 	    saleorder.setCustomerName(name);
 	    saleorder.setCustomerAddress(address);
 	    saleorder.setCustomerMobile(phone);
 	    saleorder.setCustomerEmail(email);
 	    saleorder.setTotal(finalTotal);
-	    saleorder.setCode(System.currentTimeMillis() + saleorder.getCustomerMobile()); // mã đơn hàng
-	    User user = new User();
-		user.setId(2);
-		
-		saleorder.setUser(user);
-		saleorder.setStatus(true);
 	    
-
-		// Thêm voucher nếu có
+	    User user = new User();
+	    user.setId(2); // Hoặc lấy từ user đã đăng nhập
+	    saleorder.setUser(user);
+	    saleorder.setStatus(true);
+	    
+	    // Thêm voucher nếu có
 	    if (appliedVoucher != null) {
 	        saleorder.setVoucher(appliedVoucher);
 	    }
-		
-	    // 2️: Lưu đơn hàng vào DB
-	    ss.saveOrUpdate(saleorder);;
+	    
+	    // Xác định phương thức thanh toán
+	    if ("VNPAY".equals(paymentMethod)) {
+	        // Lưu đơn hàng với trạng thái chờ thanh toán
+	        saleorder.setOrderStatus(0); // Chờ thanh toán
+	        saleorder.setPaymentMethod(1); // VNPay
+	        ss.saveOrUpdate(saleorder);
+	        
+	        // CHỈ lưu sản phẩm nếu là đơn hàng mới
+	        if (!isExistingOrder) {
+	            // Lưu các sản phẩm trong đơn hàng
+	            for (CartProduct p : cart.getCartProducts()) {
+	                Product product = ps.getById(p.getId());
+	             // Kiểm tra số lượng tồn kho trước khi trừ
+	                if (product.getStockQuantity() >= p.getQuantity().intValue()) {
+	                    product.setStockQuantity(product.getStockQuantity() - p.getQuantity().intValue());
+	                    ps.saveOrUpdate(product);
+	                }
+	                
+	                SaleOrderProduct saleOrderProduct = new SaleOrderProduct();
+	                saleOrderProduct.setSaleOrder(saleorder);
+	                saleOrderProduct.setProduct(ps.getById(p.getId()));
+	                saleOrderProduct.setQuantity(p.getQuantity().intValue());
+	                saleOrderProduct.setPrice(p.getPrice());
+	                saleOrderProduct.setProductName(p.getName());
+	                
+	                sps.saveOrUpdate(saleOrderProduct);
+	            }
+	        }
+	        
+	        // Lưu đơn hàng vào session để sử dụng khi thanh toán
+	        session.setAttribute("pendingOrder", saleorder);
+	        session.setAttribute("totalCartPrice", finalTotal);
+	        
+	        // Chuyển hướng đến trang chọn VNPay
+	        return "redirect:/create-payment";
+	        
+	    } else {
+	        // Thanh toán COD (giữ nguyên logic cũ)
+	        saleorder.setOrderStatus(2); // Đã đặt hàng (chờ xác nhận)
+	        saleorder.setPaymentMethod(0); // COD
+	        ss.saveOrUpdate(saleorder);
 
-	    // 3️: Lưu các sản phẩm trong giỏ hàng vào bảng sale_order_product
-	    for (CartProduct p : cart.getCartProducts()) {
-	    	// 3.1. Xử lý - số lượng tồn kho:
-	    	Product product = ps.getById(p.getId());
-	    	product.setStockQuantity(product.getStockQuantity() - p.getQuantity().intValue());
-	        ps.saveOrUpdate(product); // Lưu cập nhật tồn kho
-	    	
-	    	// 3.2. Xử lý thêm vào bảng sale_order_product
-	        SaleOrderProduct saleOrderProduct = new SaleOrderProduct();
-	        saleOrderProduct.setSaleOrder(saleorder);
-	        saleOrderProduct.setProduct(ps.getById(p.getId()));
-	        saleOrderProduct.setQuantity(p.getQuantity().intValue());
-	        saleOrderProduct.setPrice(p.getPrice());
-			saleOrderProduct.setProductName(p.getName());
+	        // Lưu các sản phẩm (chỉ nếu là đơn hàng mới)
+	        if (!isExistingOrder) {
+	            for (CartProduct p : cart.getCartProducts()) {
+	                Product product = ps.getById(p.getId());
+	                product.setStockQuantity(product.getStockQuantity() - p.getQuantity().intValue());
+	                ps.saveOrUpdate(product);
+	                
+	                SaleOrderProduct saleOrderProduct = new SaleOrderProduct();
+	                saleOrderProduct.setSaleOrder(saleorder);
+	                saleOrderProduct.setProduct(ps.getById(p.getId()));
+	                saleOrderProduct.setQuantity(p.getQuantity().intValue());
+	                saleOrderProduct.setPrice(p.getPrice());
+	                saleOrderProduct.setProductName(p.getName());
 
-	        sps.saveOrUpdate(saleOrderProduct);;
+	                sps.saveOrUpdate(saleOrderProduct);
+	            }
+	        }
+
+	        // Xóa session
+	        session.removeAttribute("cart");
+	        session.removeAttribute("appliedVoucher");
+	        session.removeAttribute("discountValue");
+	        session.removeAttribute("pendingOrder"); // Xóa đơn hàng chờ thanh toán
+
+	        return "redirect:/success";
 	    }
-
-	    // 4️: Xóa giỏ hàng sau khi đặt hàng thành công
-	    session.removeAttribute("cart");
-	    session.removeAttribute("appliedVoucher");
-	    session.removeAttribute("discountValue");
-
-
-	    // 5️: Chuyển hướng đến trang xác nhận
-	    return "redirect:/success";
+	}
+	
+	@RequestMapping(value = "/cancel-pending-order", method = RequestMethod.GET)
+	public String cancelPendingOrder(HttpSession session) {
+	    SaleOrder pendingOrder = (SaleOrder) session.getAttribute("pendingOrder");
+	    
+	    if (pendingOrder != null) {
+	    	
+	    	// Lấy danh sách sản phẩm trong đơn hàng
+            List<SaleOrderProduct> orderProducts = sps.findBySaleOrder(pendingOrder);
+            
+            // Khôi phục số lượng tồn kho cho từng sản phẩm
+            for (SaleOrderProduct orderProduct : orderProducts) {
+                Product product = orderProduct.getProduct();
+                if (product != null) {
+                    // Cộng lại số lượng đã trừ
+                    product.setStockQuantity(product.getStockQuantity() + orderProduct.getQuantity());
+                    ps.saveOrUpdate(product);
+                    System.out.println("Khôi phục " + orderProduct.getQuantity() + " sản phẩm: " + product.getName());
+                }
+            }
+	    	
+	        // Xóa đơn hàng khỏi database
+	        ss.deleteById(pendingOrder.getId());
+	        // Xóa khỏi session
+	        session.removeAttribute("pendingOrder");
+	    }
+	    
+	    return "redirect:/checkout";
 	}
 
 }

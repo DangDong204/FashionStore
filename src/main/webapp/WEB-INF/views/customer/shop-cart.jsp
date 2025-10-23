@@ -151,7 +151,7 @@
                     <div class="cart__total__procced">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span>$ 750.0</span></li>
+                            <!-- <li>Subtotal <span>$ 750.0</span></li> -->
                             <li>Total <span id="totalCartPriceId">
                             	<fmt:formatNumber value="${totalCartPrice }"
                             	minFractionDigits="0"></fmt:formatNumber></span>

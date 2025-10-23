@@ -174,6 +174,44 @@
 						</div>
 						<!-- End Customers Card -->
 
+						
+
+						<!-- Top 5 sản phẩm bán chạy -->
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title">Top 5 sản phẩm bán chạy</h5>
+									<div id="barChart"></div>
+
+
+									<c:set var="names" value="" />
+									<c:set var="sales" value="" />
+									<c:forEach var="i" begin="0"
+										end="${fn:length(productNames) - 1}">
+										<c:set var="names" value="${names}'${productNames[i]}'," />
+										<c:set var="sales" value="${sales}${productSales[i]}," />
+									</c:forEach>
+
+									<script>
+									  document.addEventListener("DOMContentLoaded", () => {
+									    const productNames = [${fn:substring(names, 0, fn:length(names) - 1)}];
+									    const productSales = [${fn:substring(sales, 0, fn:length(sales) - 1)}];
+									
+									    new ApexCharts(document.querySelector("#barChart"), {
+									      chart: { type: 'bar', height: 350 },
+									      plotOptions: { bar: { horizontal: true, borderRadius: 5, distributed: true }},
+									      dataLabels: { enabled: true },
+									      series: [{ name: "Số lượng bán", data: productSales }],
+									      xaxis: { categories: productNames },
+									      colors: ['#4154f1', '#2eca6a', '#FEBA17', '#ff771d', '#E55050']
+									    }).render();
+									  });
+									</script>
+								</div>
+							</div>
+						</div>
+						<!-- END - Top 5 sản phẩm bán chạy -->
+
 						<!-- Biểu đồ doanh thu 7 ngày gần nhất -->
 						<div class="col-12 mt-4">
 							<div class="card">
@@ -220,44 +258,6 @@
 							</div>
 						</div>
 						<!-- END Biểu đồ doanh thu -->
-
-						<!-- Top 5 sản phẩm bán chạy -->
-						<div class="col-12">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">Top 5 sản phẩm bán chạy</h5>
-									<div id="barChart"></div>
-
-
-									<c:set var="names" value="" />
-									<c:set var="sales" value="" />
-									<c:forEach var="i" begin="0"
-										end="${fn:length(productNames) - 1}">
-										<c:set var="names" value="${names}'${productNames[i]}'," />
-										<c:set var="sales" value="${sales}${productSales[i]}," />
-									</c:forEach>
-
-									<script>
-									  document.addEventListener("DOMContentLoaded", () => {
-									    const productNames = [${fn:substring(names, 0, fn:length(names) - 1)}];
-									    const productSales = [${fn:substring(sales, 0, fn:length(sales) - 1)}];
-									
-									    new ApexCharts(document.querySelector("#barChart"), {
-									      chart: { type: 'bar', height: 350 },
-									      plotOptions: { bar: { horizontal: true, borderRadius: 5, distributed: true }},
-									      dataLabels: { enabled: true },
-									      series: [{ name: "Số lượng bán", data: productSales }],
-									      xaxis: { categories: productNames },
-									      colors: ['#4154f1', '#2eca6a', '#FEBA17', '#ff771d', '#E55050']
-									    }).render();
-									  });
-									</script>
-								</div>
-							</div>
-						</div>
-						<!-- END - Top 5 sản phẩm bán chạy -->
-
-
 
 					</div>
 				</div>

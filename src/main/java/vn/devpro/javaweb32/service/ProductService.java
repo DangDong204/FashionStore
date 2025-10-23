@@ -17,7 +17,7 @@ public class ProductService extends BaseService<Product>{
 	}
 
 	public List<Product> findAllActive() {
-		String sql = "SELECT * FROM tbl_product WHERE status = 1";
+		String sql = "SELECT * FROM tbl_product WHERE status = 1 ORDER BY id DESC";
 		return executeNativeSql(sql);
 	}
 

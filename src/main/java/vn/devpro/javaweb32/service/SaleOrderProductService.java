@@ -8,6 +8,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
 
+import vn.devpro.javaweb32.model.SaleOrder;
 import vn.devpro.javaweb32.model.SaleOrderProduct;
 
 @Service
@@ -17,6 +18,17 @@ public class SaleOrderProductService extends BaseService<SaleOrderProduct>{
 	public Class<SaleOrderProduct> clazz() {
 		
 		return SaleOrderProduct.class;
+	}
+	
+	// Trong SaleOrderProductService
+	public List<SaleOrderProduct> findBySaleOrder(SaleOrder saleOrder) {
+	    String sql = "SELECT * FROM tbl_sale_order_product WHERE sale_order_id = " + saleOrder.getId();
+	    return super.executeNativeSql(sql);
+	}
+
+	public void deleteBySaleOrder(SaleOrder saleOrder) {
+	    String sql = "DELETE FROM tbl_sale_order_product WHERE sale_order_id = " + saleOrder.getId();
+	    super.executeNativeSql(sql);
 	}
 	
 	// Lấy top 5 sản phẩm bán chạy nhất
@@ -47,7 +59,6 @@ public class SaleOrderProductService extends BaseService<SaleOrderProduct>{
     }
     
     // Số lượng đơn trong tháng
-    @SuppressWarnings("unchecked")
     public Long countOrdersInCurrentMonth() {
         String sql = "SELECT COUNT(*) FROM tbl_sale_order "
                    + "WHERE MONTH(create_date) = MONTH(CURDATE()) "

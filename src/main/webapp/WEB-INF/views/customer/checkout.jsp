@@ -27,6 +27,27 @@
 
     <!-- Css Styles -->
     <jsp:include page="/WEB-INF/views/customer/layout/css.jsp"></jsp:include>
+    <style type="text/css">
+    	.payment-methods {
+		    margin: 20px 0;
+		}
+		
+		.payment-method {
+		    margin: 10px 0;
+		    padding: 10px;
+		    border: 1px solid #ddd;
+		    border-radius: 5px;
+		}
+		
+		.payment-method input[type="radio"] {
+		    margin-right: 10px;
+		}
+		
+		.payment-method label {
+		    font-weight: 600;
+		    cursor: pointer;
+		}
+    </style>
 </head>
 
 <body>
@@ -44,7 +65,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="${env }/index"><i class="fa fa-home"></i> Home</a>
                         <span>Check out</span>
                     </div>
                 </div>
@@ -143,7 +164,28 @@
 							        </span></li>
 								</ul>
 							</div>
-
+							
+							<div class="checkout__order__payment">
+							    <h5>Phương thức thanh toán</h5>
+							    <div class="payment-methods">
+							        <div class="payment-method">
+							            <input type="radio" id="cod" name="paymentMethod" value="COD" checked>
+							            <label for="cod">Thanh toán khi nhận hàng (COD)</label>
+							        </div>
+							        <div class="payment-method">
+							            <input type="radio" id="vnpay" name="paymentMethod" value="VNPAY">
+							            <label for="vnpay">Thanh toán qua VNPay</label>
+							        </div>
+							    </div>
+							</div>
+							
+							<c:if test="${not empty sessionScope.pendingOrder}">
+						        <div class="alert alert-warning" style="margin-top: 20px;">
+						            <p>Bạn có đơn hàng đang chờ thanh toán: <strong>${sessionScope.pendingOrder.code}</strong></p>
+						            <a href="${classpath}/cancel-pending-order" class="btn btn-danger btn-sm">Hủy đơn hàng này</a>
+						        </div>
+						    </c:if>
+							
 							<button type="submit" class="site-btn">Xác nhận đặt hàng</button>
 						</div>
 					</div>

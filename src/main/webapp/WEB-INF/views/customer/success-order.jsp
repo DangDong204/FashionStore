@@ -43,7 +43,7 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
                         <a href="${env }/index"><i class="fa fa-home"></i> Home</a>
-                        <span>Shopping cart</span>
+                        <span>Kết quả thanh toán</span>
                     </div>
                 </div>
             </div>

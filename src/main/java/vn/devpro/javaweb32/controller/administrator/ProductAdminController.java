@@ -31,8 +31,8 @@ public class ProductAdminController extends BaseController implements Jw32Contan
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String list(Model model) {
-		List<Product> products = ps.findAll();
-//		List<Product> products = ps.findAllActive();
+		//List<Product> products = ps.findAll();
+		List<Product> products = ps.findAllActive();
 		model.addAttribute("products", products);
 		
 		List<Category> categories = cs.findAll();
