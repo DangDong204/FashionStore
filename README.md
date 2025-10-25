@@ -1,9 +1,5 @@
 # 🛍️ Fashion Store - E-commerce Website
 
-[![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)](https://www.java.com/)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
-[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-
 Fashion Store là một website thương mại điện tử hoàn chỉnh được xây dựng bằng **Spring Boot**, cung cấp trải nghiệm mua sắm thời trang trực tuyến cho người dùng và một hệ thống quản lý mạnh mẽ cho quản trị viên.
 
 ---
@@ -35,9 +31,6 @@ Fashion Store là một website thương mại điện tử hoàn chỉnh đư�
 | **Database**  | MySQL                                                   |
 | **Payment**   | VNPay Integration                                       |
 | **Build Tool**| Maven                                                   |
-| **IDE**       | IntelliJ IDEA / Eclipse / VS Code                       |
+| **IDE**       | Eclipse / VS Code                       |
 
 ---
-
-   git clone https://github.com/DangDong204/FashionStore.git
-   cd FashionStore
