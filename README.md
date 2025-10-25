@@ -53,7 +53,7 @@ Fashion Store là một website thương mại điện tử hoàn chỉnh đư�
 ![Đăng ký](screenshots/signup.png)
 
 ### Admin - Dashboard
-!Dashboard](screenshots/admin_dashboard.png)
+![Dashboard](screenshots/admin_dashboard.png)
 
 ### Admin - Products
 ![Quản lý sản phẩm](screenshots/admin_products.png)
