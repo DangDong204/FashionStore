@@ -42,7 +42,7 @@
             <h5 class="card-title">Danh sách phiếu giảm giá</h5>
 
             <div class="text-end mb-3">
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addVoucherModal">
                 <i class="ri-add-circle-fill"></i> Thêm mới
               </button>
             </div>
@@ -108,46 +108,54 @@
                       </td>
                       
 			          <td>
-<%-- 			          	<button type="button"
+ 			          	<button type="button"
 						        class="btn btn-primary btn-sm text-white"
 						        title="Xem chi tiết"
 						        data-bs-toggle="modal"
-						        data-bs-target="#detailCategoryModal"
-						        data-id="${category.id}"
-						        data-name="${category.name}"
-						        data-createby="${category.createBy}"
-						        data-updateby="${category.updateBy}"
-						        data-createdate="<fmt:formatDate value='${category.createDate}' pattern='dd-MM-yyyy'/>"
-						        data-updatedate="<fmt:formatDate value='${category.updateDate}' pattern='dd-MM-yyyy'/>"
-						        data-status="${category.status}"
-						        data-desc="${category.description}">
+						        data-bs-target="#detailVoucherModal"
+						        data-code="${voucher.code}"
+						        data-type="${voucher.discountType}"
+						        data-value="${voucher.discountValue}"
+						        data-quantity="${voucher.quantity}"
+						        data-minorder="${voucher.minOrderValue}"
+						        data-startdate="<fmt:formatDate value='${voucher.startDate}' pattern='dd-MM-yyyy'/>"
+						        data-enddate="<fmt:formatDate value='${voucher.endDate}' pattern='dd-MM-yyyy'/>"
+						        data-status="${voucher.status}"
+						        data-createby="${voucher.createBy}"
+						        data-updateby="${voucher.updateBy}"
+						        data-createdate="<fmt:formatDate value='${voucher.createDate}' pattern='dd-MM-yyyy'/>"
+						        data-updatedate="<fmt:formatDate value='${voucher.updateDate}' pattern='dd-MM-yyyy'/>">
 						  <i class="ri-eye-fill"></i>
-						</button> --%>
-<%-- 			          	
-			            <button type="button" 
-						        class="btn btn-warning btn-sm" 
+						</button>
+						 			          	 			          	
+			            <button type="button"
+						        class="btn btn-warning btn-sm text-dark"
 						        title="Chỉnh sửa"
-						        data-bs-toggle="modal" 
-						        data-bs-target="#editCategoryModal"
-						        data-id="${category.id}"
-						        data-name="${category.name}"
-						        data-createby="${category.createBy}"
-						        data-updateby="${category.updateBy}"
-						        data-createdate="<fmt:formatDate value='${category.createDate}' pattern='yyyy-MM-dd'/>"
-						        data-updatedate="<fmt:formatDate value='${category.updateDate}' pattern='yyyy-MM-dd'/>"
-						        data-status="${category.status}"
-						        data-desc="${category.description}">
+						        data-bs-toggle="modal"
+						        data-bs-target="#editVoucherModal"
+						
+						        data-id="${voucher.id}"
+						        data-code="${voucher.code}"
+						        data-type="${voucher.discountType}"
+						        data-value="${voucher.discountValue}"
+						        data-quantity="${voucher.quantity}"
+						        data-minorder="${voucher.minOrderValue}"
+						
+						        data-startdate="<fmt:formatDate value='${voucher.startDate}' pattern='yyyy-MM-dd'/>"
+								data-enddate="<fmt:formatDate value='${voucher.endDate}' pattern='yyyy-MM-dd'/>"
+						        
+						
+						        data-status="${voucher.status}">
 						  <i class="ri-pencil-fill"></i>
 						</button>
- --%>
-<%-- 
+									            
 			            <a href="${env }/admin/voucher/delete/${voucher.id}"
 						   class="btn btn-danger btn-sm"
 						   title="Xóa"
 						   onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không?');">
 						  <i class="ri-delete-bin-5-fill"></i>
 						</a>
- --%>
+
 			          </td>
 			        </tr>
 			      </c:forEach>
@@ -163,11 +171,11 @@
 
 	</main>
 	<!-- End #main -->
-	<%-- 
-	<jsp:include page="/WEB-INF/views/administrator/voucher/category-read.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/views/administrator/voucher/category-add.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/views/administrator/voucher/category-edit.jsp"></jsp:include>
-	 --%>
+	
+	<jsp:include page="/WEB-INF/views/administrator/voucher/voucher-read.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/administrator/voucher/voucher-add.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/administrator/voucher/voucher-edit.jsp"></jsp:include>
+
 	
 	
 	<!-- Footer - File -->

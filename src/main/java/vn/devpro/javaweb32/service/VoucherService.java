@@ -1,6 +1,9 @@
 package vn.devpro.javaweb32.service;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -27,5 +30,24 @@ public class VoucherService extends BaseService<Voucher>{
 		var result = executeNativeSql(sql);
 		return result.isEmpty() ? null : result.get(0);
 	}
+	
+	@Transactional
+	@Override
+	public void saveOrUpdate(Voucher voucher) {
+	    if (voucher.getId() == null || voucher.getId() == 0) {
+	        // Thêm mới
+	        voucher.setCreateDate(new Date()); 
+	        entityManager.persist(voucher);
+	    } else {
+	        // Cập nhật
+	        Voucher existing = entityManager.find(Voucher.class, voucher.getId());
+	        if (existing != null) {
+	            voucher.setCreateDate(existing.getCreateDate());
+	            voucher.setCreateBy(existing.getCreateBy());
+	            entityManager.merge(voucher);
+	        }
+	    }
+	}
+
 
 }

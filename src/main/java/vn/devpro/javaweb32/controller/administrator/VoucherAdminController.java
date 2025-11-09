@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,4 +27,25 @@ public class VoucherAdminController extends BaseController{
 	
 		return "administrator/voucher/voucher-list";
 	}
+	
+	@RequestMapping(value = "add", method = RequestMethod.POST)
+	public String add(Voucher voucher) {
+	    vs.saveOrUpdate(voucher);
+	    return "redirect:/admin/voucher/list";
+	}
+	
+	@RequestMapping(value = "edit", method = RequestMethod.POST)
+	public String edit(Voucher voucher) {
+	    vs.saveOrUpdate(voucher);
+	    return "redirect:/admin/voucher/list";
+	}
+	
+	@RequestMapping(value = "delete/{voucherId}", method = RequestMethod.GET)
+	public String delete(@PathVariable("voucherId") int voucherId) {
+		Voucher voucher = vs.getById(voucherId);
+		voucher.setStatus(false);
+		vs.saveOrUpdate(voucher);
+		return "redirect:/admin/voucher/list";
+	}
+
 }
