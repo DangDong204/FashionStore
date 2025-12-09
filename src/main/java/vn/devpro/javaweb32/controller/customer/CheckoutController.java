@@ -187,7 +187,7 @@ public class CheckoutController extends BaseController{
 	        
 	    } else {
 	        // Thanh toán COD (giữ nguyên logic cũ)
-	        saleorder.setOrderStatus(2); // Đã đặt hàng (chờ xác nhận)
+	        saleorder.setOrderStatus(0); // Chờ phê duyệt
 	        saleorder.setPaymentMethod(0); // COD
 	        ss.saveOrUpdate(saleorder);
 

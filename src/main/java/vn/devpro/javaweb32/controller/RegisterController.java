@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import vn.devpro.javaweb32.model.Role;
 import vn.devpro.javaweb32.model.User;
-import vn.devpro.javaweb32.model.UserRole;
 import vn.devpro.javaweb32.service.RoleService;
 import vn.devpro.javaweb32.service.UserRoleService;
 import vn.devpro.javaweb32.service.UserService;
