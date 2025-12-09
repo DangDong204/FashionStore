@@ -68,22 +68,35 @@
             </div>
             <div class="col-xl-6 col-lg-7">
                 <nav class="header__menu">
-                    <ul>
-                        <li class="active"><a href="${env }/index">Home</a></li>
-                        <li><a href="#">Quần</a></li>
-                        <li><a href="#">Áo</a></li>
-                        <li><a href="${env }/shop">Shop</a></li>
-                        <li><a href="#">Blog</a>
-                            <ul class="dropdown">
-                                <li><a href="#">Blog Details</a></li>
-                                <li><a href="#">Blog Details</a></li>
-                                <li><a href="#">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="${env }/checkout">Checkout</a></li>
-                        <li><a href="${env }/contact">Contact</a></li>
-                    </ul>
-                </nav>
+				    <ul>
+				        <li class="${activePage == 'home' ? 'active' : ''}">
+				            <a href="${env}/index">Home</a>
+				        </li>
+				        <li class="${activePage == 'quan' ? 'active' : ''}">
+				            <a href="#">Quần</a>
+				        </li>
+				        <li class="${activePage == 'ao' ? 'active' : ''}">
+				            <a href="#">Áo</a>
+				        </li>
+				        <li class="${activePage == 'shop' ? 'active' : ''}">
+				            <a href="${env}/shop">Shop</a>
+				        </li>
+				        <li class="${activePage == 'blog' ? 'active' : ''}">
+				            <a href="#">Blog</a>
+				            <ul class="dropdown">
+				                <li><a href="#">Blog Details</a></li>
+				                <li><a href="#">Blog Details</a></li>
+				                <li><a href="#">Blog Details</a></li>
+				            </ul>
+				        </li>
+				        <li class="${activePage == 'checkout' ? 'active' : ''}">
+				            <a href="${env}/checkout">Checkout</a>
+				        </li>
+				        <li class="${activePage == 'contact' ? 'active' : ''}">
+				            <a href="${env}/contact">Contact</a>
+				        </li>
+				    </ul>
+				</nav>
             </div>
             <div class="col-lg-3">
                 <div class="header__right">
@@ -112,6 +125,7 @@
 					                </a>
 					                <ul class="account-dropdown">
 					                    <li><a href="${env}/account">Thông tin tài khoản</a></li>
+					                    <li><a href="${env}/my-order">Đơn hàng của bạn</a></li>
 					                    <li><a href="${env}/logout">Đăng xuất</a></li>
 					                </ul>
 					            </div>

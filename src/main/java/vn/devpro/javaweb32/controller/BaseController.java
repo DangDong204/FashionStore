@@ -33,6 +33,41 @@ public class BaseController {
 		return total;
 	}
 	
+	// Bổ sung T3 - 09/12: active Page trên header
+	@ModelAttribute("activePage")
+	public String getActivePage(HttpServletRequest request) {
+	    String requestURI = request.getRequestURI();
+	    String contextPath = request.getContextPath();
+	    
+	    // Loại bỏ context path
+	    if (contextPath != null && !contextPath.isEmpty() && requestURI.startsWith(contextPath)) {
+	        requestURI = requestURI.substring(contextPath.length());
+	    }
+	    
+	    // Xác định active page
+	    if (requestURI == null || requestURI.isEmpty() || requestURI.equals("/") || requestURI.contains("/index")) {
+	        return "home";
+	    } else if (requestURI.contains("/shop")) {
+	        return "shop";
+	    } else if (requestURI.contains("/cart")) {
+	        return "cart";
+	    } else if (requestURI.contains("/checkout")) {
+	        return "checkout";
+	    } else if (requestURI.contains("/contact")) {
+	        return "contact";
+	    } else if (requestURI.contains("/my-order")) {
+	        return "my-order";
+	    } else if (requestURI.contains("/quan")) {
+	        return "quan";
+	    } else if (requestURI.contains("/ao")) {
+	        return "ao";
+	    } else if (requestURI.contains("/blog")) {
+	        return "blog";
+	    }
+	    
+	    return "";
+	}
+	
 	// Bố sung T7 - 18/10: tự động điền thông tin khi đăng nhập trong checkout
 	// Lay thong tin cua user dang nhap
 	@ModelAttribute("loginedUser")
