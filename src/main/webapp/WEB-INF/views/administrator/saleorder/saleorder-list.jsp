@@ -124,7 +124,7 @@
 
 						<td>
 							<!-- Nút Xem chi tiết -->
-							<button type="button"
+							<%-- <button type="button"
 								class="btn btn-primary btn-sm text-white"
 								title="Xem chi tiết" data-bs-toggle="modal"
 								data-bs-target="#detailSaleOrderModal"
@@ -134,20 +134,25 @@
 								data-orderstatus="${saleorder.orderStatus}"
 								data-description="${saleorder.description}">
 								<i class="ri-eye-fill"></i>
-							</button> 
+							</button>  --%>
+							<a href="${env}/admin/saleorder/detail/${saleorder.id}" 
+   class="btn btn-primary btn-sm text-white" 
+   title="Xem chi tiết">
+    <i class="ri-eye-fill"></i>
+</a>
 							<!-- Nút Chỉnh sửa trạng thái -->
 							<!-- Trong phần action buttons -->
-<button type="button" class="btn btn-warning btn-sm"
-    title="Chỉnh sửa trạng thái" data-bs-toggle="modal"
-    data-bs-target="#editSaleOrderModal"
-    data-id="${saleorder.id}" 
-    data-code="${saleorder.code}"
-    data-customername="${saleorder.customerName}"
-    data-total="${saleorder.total}"
-    data-orderstatus="${saleorder.orderStatus}"
-    data-description="${saleorder.description}">
-    <i class="ri-pencil-fill"></i>
-</button>
+							<button type="button" class="btn btn-warning btn-sm"
+							    title="Chỉnh sửa trạng thái" data-bs-toggle="modal"
+							    data-bs-target="#editSaleOrderModal"
+							    data-id="${saleorder.id}" 
+							    data-code="${saleorder.code}"
+							    data-customername="${saleorder.customerName}"
+							    data-total="${saleorder.total}"
+							    data-orderstatus="${saleorder.orderStatus}"
+							    data-description="${saleorder.description}">
+							    <i class="ri-pencil-fill"></i>
+							</button>
 							
 							<!-- Nút Xóa (nếu cần) --> 
 							<a href="${env }/admin/saleorder/delete/${saleorder.id}"
@@ -170,10 +175,10 @@
 
 	</main>
 	<!-- End #main -->
-	<%-- 
-	<jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-read.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-add.jsp"></jsp:include>
-	 --%>
+	
+	
+	<%-- <jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-add.jsp"></jsp:include> --%>
+	<%-- <jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-read.jsp"></jsp:include> --%>
 	<jsp:include page="/WEB-INF/views/administrator/saleorder/saleorder-edit.jsp"></jsp:include>
 	
 	

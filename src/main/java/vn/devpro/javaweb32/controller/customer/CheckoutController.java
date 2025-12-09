@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import vn.devpro.javaweb32.model.Voucher;
 import vn.devpro.javaweb32.service.ProductService;
 import vn.devpro.javaweb32.service.SaleOrderProductService;
 import vn.devpro.javaweb32.service.SaleOrderService;
+import vn.devpro.javaweb32.service.UserService;
 
 @Controller
 public class CheckoutController extends BaseController{
@@ -32,6 +34,8 @@ public class CheckoutController extends BaseController{
 	@Autowired SaleOrderService ss;
 	
 	@Autowired SaleOrderProductService sps;
+	
+	@Autowired UserService us;
 	
 	@RequestMapping(value = "/checkout", method = RequestMethod.GET)
 	public String checkout(final HttpServletRequest request, final Model model) {
@@ -104,6 +108,16 @@ public class CheckoutController extends BaseController{
 	        }
 	    }
 	    
+	    // Hỗ trợ phần gán user_id vào đơn hàng
+	    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User loggedInUser = us.getEntityByNativeSQL("SELECT * FROM tbl_user WHERE username = '" + username + "'");
+        
+        // Nếu không có user đăng nhập gán user_id = 15 (khách vãng lai)
+        if (loggedInUser == null) {
+            loggedInUser = new User();
+            loggedInUser.setId(15); 
+        }
+	    
 	    // KIỂM TRA: Nếu đã có đơn hàng chờ thanh toán trong session, sử dụng lại
 	    SaleOrder saleorder = (SaleOrder) session.getAttribute("pendingOrder");
 	    boolean isExistingOrder = (saleorder != null);
@@ -121,10 +135,14 @@ public class CheckoutController extends BaseController{
 	    saleorder.setCustomerEmail(email);
 	    saleorder.setTotal(finalTotal);
 	    
-	    User user = new User();
-	    user.setId(2); // Hoặc lấy từ user đã đăng nhập
-	    saleorder.setUser(user);
-	    saleorder.setStatus(true);
+//	    User user = new User();
+//	    user.setId(2); // Hoặc lấy từ user đã đăng nhập
+//	    saleorder.setUser(user);
+//	    saleorder.setStatus(true);
+	    
+		//Lấy user_id đăng nhập gán vào đơn hàng
+        saleorder.setUser(loggedInUser);
+        saleorder.setStatus(true);
 	    
 	    // Thêm voucher nếu có
 	    if (appliedVoucher != null) {

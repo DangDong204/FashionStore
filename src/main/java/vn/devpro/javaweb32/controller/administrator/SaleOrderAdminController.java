@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import vn.devpro.javaweb32.model.SaleOrder;
-import vn.devpro.javaweb32.model.User;
+import vn.devpro.javaweb32.model.SaleOrderProduct;
 import vn.devpro.javaweb32.service.SaleOrderService;
 
 @Controller
@@ -28,6 +28,24 @@ public class SaleOrderAdminController {
 		model.addAttribute("saleorders", saleorders);
 		
 		return "administrator/saleorder/saleorder-list";
+	}
+	
+	// Xem chi tiết đơn hàng
+	@RequestMapping(value = "detail/{saleOrderId}", method = RequestMethod.GET)
+	public String detail(@PathVariable("saleOrderId") int saleOrderId, Model model) {
+	    // Lấy thông tin đơn hàng
+	    SaleOrder saleOrder = ss.getById(saleOrderId);
+	    if (saleOrder == null) {
+	        return "redirect:/admin/saleorder/list";
+	    }
+	    
+	    // Lấy danh sách sản phẩm trong đơn hàng
+	    List<SaleOrderProduct> saleOrderProducts = saleOrder.getSaleOrderProducts();
+	    
+	    model.addAttribute("saleOrder", saleOrder);
+	    model.addAttribute("saleOrderProducts", saleOrderProducts);
+	    
+	    return "administrator/saleorder/saleorder-detail";
 	}
 	
 	// Phương thức cập nhật trạng thái đơn hàng
