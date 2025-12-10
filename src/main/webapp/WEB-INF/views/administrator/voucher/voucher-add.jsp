@@ -13,7 +13,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
-      <form action="${env}/admin/voucher/add" method="post" class="modal-body">
+      <form id="addVoucherForm" action="${env}/admin/voucher/add" method="post" class="modal-body">
         <div class="row g-3">
 
           <div class="col-md-6">
@@ -31,7 +31,7 @@
 
           <div class="col-md-6">
             <label class="form-label fw-semibold">Giá trị giảm</label>
-            <input type="number" name="discountValue" class="form-control" required>
+            <input type="number" name="discountValue" class="form-control" min="0" required>
           </div>
 
           <div class="col-md-6">
@@ -73,3 +73,123 @@
     </div>
   </div>
 </div>
+
+<!-- <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.getElementById("addVoucherForm");
+
+  const discountValue = form.querySelector("input[name='discountValue']");
+  const quantity = form.querySelector("input[name='quantity']");
+  const minOrderValue = form.querySelector("input[name='minOrderValue']");
+
+  form.addEventListener("submit", function(event) {
+    let hasError = false;
+
+    // Hàm kiểm tra chung
+    function validatePositive(input, message) {
+      const value = Number(input.value);
+      if (isNaN(value) || value <= 0) {
+        showError(input, message);
+        hasError = true;
+      } else {
+        removeError(input);
+      }
+    }
+
+    // Gọi hàm kiểm tra từng trường
+    validatePositive(discountValue, "Giá trị giảm phải lớn hơn 0.");
+    validatePositive(quantity, "Số lượng phải lớn hơn 0.");
+    validatePositive(minOrderValue, "Giá trị đơn hàng tối thiểu phải lớn hơn 0.");
+
+    // Nếu có lỗi thì chặn gửi form
+    if (hasError) event.preventDefault();
+  });
+
+  // Hiển thị lỗi Bootstrap
+  function showError(input, message) {
+    input.classList.add("is-invalid");
+    let error = input.parentNode.querySelector(".invalid-feedback");
+    if (!error) {
+      error = document.createElement("div");
+      error.className = "invalid-feedback";
+      input.parentNode.appendChild(error);
+    }
+    error.innerText = message;
+  }
+
+  // Xóa trạng thái lỗi
+  function removeError(input) {
+    input.classList.remove("is-invalid");
+  }
+
+});
+</script> -->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.getElementById("addVoucherForm");
+
+  const discountValue = form.querySelector("input[name='discountValue']");
+  const quantity = form.querySelector("input[name='quantity']");
+  const minOrderValue = form.querySelector("input[name='minOrderValue']");
+  const startDate = form.querySelector("input[name='startDate']");
+  const endDate = form.querySelector("input[name='endDate']");
+
+  form.addEventListener("submit", function(event) {
+    let hasError = false;
+
+    // Hàm kiểm tra chung cho số dương
+    function validatePositive(input, message) {
+      const value = Number(input.value);
+      if (isNaN(value) || value <= 0) {
+        showError(input, message);
+        hasError = true;
+      } else {
+        removeError(input);
+      }
+    }
+
+    // === Kiểm tra 3 giá trị số dương ===
+    validatePositive(discountValue, "Giá trị giảm phải lớn hơn 0.");
+    validatePositive(quantity, "Số lượng phải lớn hơn 0.");
+    validatePositive(minOrderValue, "Giá trị đơn hàng tối thiểu phải lớn hơn 0.");
+
+    // === Kiểm tra ngày bắt đầu <= ngày kết thúc ===
+    const start = new Date(startDate.value);
+    const end = new Date(endDate.value);
+	
+ 	// Tính ngày tối thiểu hợp lệ cho endDate
+    const minEnd = new Date(start);
+    minEnd.setDate(minEnd.getDate() + 1);
+    
+    if (startDate.value && endDate.value && end < minEnd) {
+      showError(endDate, "Ngày kết thúc phải lớn hơn ngày bắt đầu.");
+      hasError = true;
+    } else {
+      removeError(endDate);
+    }
+
+    if (hasError) event.preventDefault();
+  });
+
+  // Hiển thị lỗi
+  function showError(input, message) {
+    input.classList.add("is-invalid");
+    let error = input.parentNode.querySelector(".invalid-feedback");
+    if (!error) {
+      error = document.createElement("div");
+      error.className = "invalid-feedback";
+      input.parentNode.appendChild(error);
+    }
+    error.innerText = message;
+  }
+
+  // Xóa lỗi
+  function removeError(input) {
+    input.classList.remove("is-invalid");
+  }
+
+});
+</script>

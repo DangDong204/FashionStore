@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +35,7 @@ public class UserAdminController extends BaseController implements Jw32Contant{
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String list(Model model) {
-		List<User> users =  us.findAll();
+		List<User> users =  us.findAllActive();
 		List<Role> roles = rs.findAll();
 		
 		model.addAttribute("users", users);
@@ -45,6 +46,7 @@ public class UserAdminController extends BaseController implements Jw32Contant{
 	
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	public String addUser(User user,
+							@RequestParam("password") String password,
 	                      @RequestParam(value = "avatarFile", required = false) MultipartFile avatarFile,
 	                      @RequestParam(value = "roleIds", required = false) List<Integer> roleIds) 
 	                    throws IOException {
@@ -64,7 +66,9 @@ public class UserAdminController extends BaseController implements Jw32Contant{
 	        user.setAvatar("UploadFiles/User/Avatar/avt_default.jpg"); // avatar mặc định
 	    }
 
-	    // Password cần hash nếu muốn bảo mật (nếu chưa hash, lưu thẳng)
+	    // Xử lý password
+	    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	    user.setPassword(encoder.encode(password));
 	    us.saveOrUpdate(user);
 	    
 	    // ---- XỬ LÝ PHÂN QUYỀN ----

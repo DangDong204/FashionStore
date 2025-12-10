@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import vn.devpro.javaweb32.controller.BaseController;
 import vn.devpro.javaweb32.dto.Cart;
 import vn.devpro.javaweb32.dto.CartProduct;
+import vn.devpro.javaweb32.model.Product;
+import vn.devpro.javaweb32.service.ProductService;
 
 @Controller
 public class CustomerCartController extends BaseController{
+	
+	@Autowired ProductService ps;
 	
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public String cart(
@@ -95,24 +100,52 @@ public class CustomerCartController extends BaseController{
 			// Tim hang trong gio can sua
 			int index = cart.findById(cartProduct.getId());
 			if(index != -1) {
-				// Chia 2 TH:
-				// TH1: Bấm dấu -
-				if(cartProduct.getQuantity().intValue() == -1) {	// dau - gán bằng -1 ở hàm js trong cart-view
-					if(cart.getCartProducts().get(index).getQuantity().intValue() > 1) {	// Ktra so luong co = 1 hay khong
-						cart.getCartProducts().get(index).updateQuantity(new BigInteger("-1"));
-					}
-				} // TH2: Bấm dấu +
-				  else {											// dau + gán bằng 1 ở hàm js trong cart-view
-					cart.getCartProducts().get(index).updateQuantity(new BigInteger("1"));
-				}
+				
+				// Lấy thông tin sản phẩm từ database
+	            Product product = ps.getById(cartProduct.getId());
+	            
+	            if (product == null) {
+	                jsonResults.put("code", 404);
+	                jsonResults.put("message", "Sản phẩm không tồn tại");
+	                return ResponseEntity.ok(jsonResults);
+	            }
+	            
+	            int stockQuantity = product.getStockQuantity();
+	            int currentQuantityInCart = cart.getCartProducts().get(index).getQuantity().intValue();
+	            
+	            // TH1: Bấm dấu -
+	            if(cartProduct.getQuantity().intValue() == -1) {
+	                if(currentQuantityInCart > 1) {
+	                    cart.getCartProducts().get(index).updateQuantity(new BigInteger("-1"));
+	                }
+	            } 
+	            // TH2: Bấm dấu +
+	            else if(cartProduct.getQuantity().intValue() == 1) {
+	                // Kiểm tra xem có vượt quá tồn kho không
+	                if (currentQuantityInCart + 1 > stockQuantity) {
+	                    jsonResults.put("code", 400);
+	                    jsonResults.put("message", "Số lượng vượt quá tồn kho. Chỉ còn " + stockQuantity + " sản phẩm");
+	                    jsonResults.put("stockQuantity", stockQuantity);
+	                    jsonResults.put("currentQuantity", currentQuantityInCart);
+	                    return ResponseEntity.ok(jsonResults);
+	                }
+	                cart.getCartProducts().get(index).updateQuantity(new BigInteger("1"));
+	            }
 				// Cap nhat lai session
 				session.setAttribute("cart", cart);
 				
+				int newQuantity = cart.getCartProducts().get(index).getQuantity().intValue();
+	            int remainingStock = stockQuantity - newQuantity;
+				
+				jsonResults.put("code", 200);
 				jsonResults.put("productId", cartProduct.getId());
 				jsonResults.put("newQuantity", cart.getCartProducts().get(index).getQuantity());
+				jsonResults.put("remainingStock", remainingStock);
 				jsonResults.put("totalPrice", toCurrency(cart.getCartProducts().get(index).totalPrice()) + " ₫");
 				jsonResults.put("totalCartPrice", toCurrency(cart.totalCartPrice()) + " ₫");
 				jsonResults.put("totalCartProducts", super.totalCartProducts(request));
+				
+				
 	
 			}
 		}

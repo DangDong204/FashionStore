@@ -101,6 +101,11 @@
 										class="bi bi-arrow-return-left me-1"></i>Trả hàng
 									</span>
 								</c:when>
+								<c:when test="${saleorder.orderStatus == 6}">
+									<span class="badge bg-danger-emphasis"> <i
+										class="bi bi-check-lg me-1"></i>Huỷ đơn
+									</span>
+								</c:when>
 								<c:otherwise>
 									<span class="badge bg-dark"> <i
 										class="bi bi-question-circle me-1"></i>Không xác định

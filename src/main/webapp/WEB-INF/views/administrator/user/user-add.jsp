@@ -82,7 +82,8 @@
     </div>
   </div>
 </div>
-    
+
+<!-- JS - Xem trước ảnh -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const avatarInput = document.querySelector("input[name='avatarFile']");
@@ -107,4 +108,66 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-    
+
+<!-- JS - Xử lý mật khẩu mạnh -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.querySelector("#addUserModal form");
+  const passwordInput = form.querySelector("input[name='password']");
+
+  form.addEventListener("submit", function(event) {
+    const password = passwordInput.value;
+    let hasError = false;
+
+    // Yêu cầu mật khẩu mạnh
+    const regex = {
+      length: /.{8,}/,
+      upper: /[A-Z]/,
+      lower: /[a-z]/,
+      number: /[0-9]/,
+      special: /[!@#$%^&*(),.?":{}|<>]/,
+    };
+
+    if (!regex.length.test(password)) {
+      showError(passwordInput, "Mật khẩu phải có ít nhất 8 ký tự.");
+      hasError = true;
+    } else if (!regex.upper.test(password)) {
+      showError(passwordInput, "Mật khẩu phải chứa ít nhất 1 chữ hoa.");
+      hasError = true;
+    } else if (!regex.lower.test(password)) {
+      showError(passwordInput, "Mật khẩu phải chứa ít nhất 1 chữ thường.");
+      hasError = true;
+    } else if (!regex.number.test(password)) {
+      showError(passwordInput, "Mật khẩu phải chứa ít nhất 1 chữ số.");
+      hasError = true;
+    } else if (!regex.special.test(password)) {
+      showError(passwordInput, "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt.");
+      hasError = true;
+    } else {
+      removeError(passwordInput);
+    }
+
+    if (hasError) event.preventDefault();
+  });
+
+  // Hàm hiển thị lỗi Bootstrap
+  function showError(input, message) {
+    input.classList.add("is-invalid");
+    let error = input.parentNode.querySelector(".invalid-feedback");
+
+    if (!error) {
+      error = document.createElement("div");
+      error.className = "invalid-feedback";
+      input.parentNode.appendChild(error);
+    }
+
+    error.innerText = message;
+  }
+
+  function removeError(input) {
+    input.classList.remove("is-invalid");
+  }
+
+});
+</script>

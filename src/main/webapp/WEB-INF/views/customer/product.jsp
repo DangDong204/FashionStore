@@ -106,6 +106,14 @@
                                 <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
                             </ul>
                         </div>
+                        <div class="">
+                        	<h6>Còn lại:</h6>
+                        	<div><span>${product.stockQuantity }</span></div>
+                        	 
+                                
+                           
+                        </div>
+                        
                         <div class="product__details__widget">
                             <ul>
                                 <li>

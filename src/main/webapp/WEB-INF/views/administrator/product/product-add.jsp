@@ -13,7 +13,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Đóng"></button>
       </div>
 
-      <form action="${env}/admin/product/add" method="post" enctype="multipart/form-data">
+      <form id="addProductForm" action="${env}/admin/product/add" method="post" enctype="multipart/form-data">
         <div class="modal-body">
           <div class="row g-3">
 
@@ -201,6 +201,93 @@ document.addEventListener("DOMContentLoaded", () => {
     avatarInput.value = "";
     imageFilesInput.value = "";
   });
+});
+</script>
+
+
+<!-- <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ... các đoạn code preview ảnh của bạn ...
+
+  // === VALIDATION SỐ LƯỢNG > 0 ===
+  const formAdd = document.getElementById("addProductForm");
+  const stockInput = formAdd.querySelector("input[name='stockQuantity']");
+
+  formAdd.addEventListener("submit", function(event) {
+    const value = Number(stockInput.value);
+
+    if (isNaN(value) || value <= 0) {
+      event.preventDefault();   // chặn submit
+      stockInput.classList.add("is-invalid");
+
+      // Nếu chưa có thông báo lỗi thì tạo
+      let error = stockInput.parentNode.querySelector(".invalid-feedback");
+      if (!error) {
+        error = document.createElement("div");
+        error.className = "invalid-feedback";
+        error.innerText = "Số lượng phải lớn hơn 0.";
+        stockInput.parentNode.appendChild(error);
+      }
+
+      // Focus lại vào ô nhập
+      stockInput.focus();
+    } else {
+      // Nếu hợp lệ thì xoá trạng thái lỗi (nếu có)
+      stockInput.classList.remove("is-invalid");
+    }
+  });
+
+});
+</script> -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const formAdd = document.getElementById("addProductForm");
+  const stockInput = formAdd.querySelector("input[name='stockQuantity']");
+  const priceInput = formAdd.querySelector("input[name='price']");
+  const salePriceInput = formAdd.querySelector("input[name='salePrice']");
+
+  formAdd.addEventListener("submit", function(event) {
+    let hasError = false;
+
+    // === KIỂM TRA SỐ LƯỢNG > 0 ===
+    const stock = Number(stockInput.value);
+    if (isNaN(stock) || stock <= 0) {
+      showError(stockInput, "Số lượng phải lớn hơn 0.");
+      hasError = true;
+    } else removeError(stockInput);
+
+    // === KIỂM TRA GIÁ BÁN < GIÁ GỐC ===
+    const price = Number(priceInput.value);
+    const salePrice = Number(salePriceInput.value);
+
+    if (salePrice > 0 && salePrice >= price) {
+      showError(salePriceInput, "Giá bán phải nhỏ hơn giá gốc.");
+      hasError = true;
+    } else removeError(salePriceInput);
+
+    // Nếu có lỗi thì chặn submit
+    if (hasError) event.preventDefault();
+  });
+
+  // Hàm hiển thị lỗi Bootstrap
+  function showError(input, message) {
+    input.classList.add("is-invalid");
+    let error = input.parentNode.querySelector(".invalid-feedback");
+    if (!error) {
+      error = document.createElement("div");
+      error.className = "invalid-feedback";
+      input.parentNode.appendChild(error);
+    }
+    error.innerText = message;
+  }
+
+  // Hàm xoá lỗi
+  function removeError(input) {
+    input.classList.remove("is-invalid");
+  }
+
 });
 </script>
 

@@ -175,35 +175,80 @@
 	<jsp:include page="/WEB-INF/views/customer/layout/js.jsp"></jsp:include>
 	
 	<script type="text/javascript">
-		updateProductQuantity = function(_productId, _quantity) {
-			let data = {
-				id : _productId, //lay theo id
-				quantity : _quantity
-			};
-
-			//$ === jQuery
-			jQuery.ajax({
-				url : "/update-product-quantity",
-				type : "POST",
-				contentType : "application/json",
-				data : JSON.stringify(data),
-				dataType : "json", //Kieu du lieu tra ve tu controller la json
-
-				success : function(jsonResult) {
-					let totalProducts = jsonResult.totalCartProducts; 
-					//Viet lai so luong sau khi bam nut -, +
-					$("#productQuantity_" + jsonResult.productId).val(jsonResult.newQuantity);
-					$("#totalCartPriceId").html(jsonResult.totalCartPrice); 
-					$("#totalPrice_" + jsonResult.productId).html(jsonResult.totalPrice);
-					$("#totalCartProducts").html(jsonResult.totalCartProducts);
-				},
-
-				error : function(jqXhr, textStatus, errorMessage) {
-					alert("An error occur");
-				}
-			});
-		}
+	    updateProductQuantity = function(_productId, _quantity) {
+	        let data = {
+	            id: _productId,
+	            quantity: _quantity
+	        };
+	
+	        $.ajax({
+	            url: "/update-product-quantity",
+	            type: "POST",
+	            contentType: "application/json",
+	            data: JSON.stringify(data),
+	            dataType: "json",
+	            success: function(jsonResult) {
+	                if (jsonResult.code === 200) {
+	                    // Cập nhật UI
+	                    $("#productQuantity_" + jsonResult.productId).val(jsonResult.newQuantity);
+	                    $("#totalCartPriceId").html(jsonResult.totalCartPrice); 
+	                    $("#totalPrice_" + jsonResult.productId).html(jsonResult.totalPrice);
+	                    $("#totalCartProducts").html(jsonResult.totalCartProducts);
+	                    
+	                    // Hiển thị thông báo thành công
+	                    showCartAlert('Cập nhật số lượng thành công!', 'success');
+	                    
+	                } else if (jsonResult.code === 400) {
+	                    // Số lượng vượt quá tồn kho
+	                    showCartAlert(jsonResult.message, 'warning');
+	                    
+	                    // Có thể hiển thị số lượng tồn kho
+	                    if (jsonResult.stockQuantity !== undefined) {
+	                        const row = $("#row_" + _productId);
+	                        row.find('.stock-info').remove();
+	                        row.find('td:nth-child(3)').append(`
+	                            <div class="stock-info text-danger small mt-1">
+	                                <i class="fa fa-box me-1"></i>
+	                                Còn ${jsonResult.stockQuantity} sản phẩm
+	                            </div>
+	                        `);
+	                    }
+	                    
+	                } else {
+	                    showCartAlert(jsonResult.message || 'Có lỗi xảy ra!', 'danger');
+	                }
+	            },
+	            error: function() {
+	                showCartAlert('Lỗi kết nối máy chủ!', 'danger');
+	            }
+	        });
+	    }
+	    
+	    function showCartAlert(message, type) {
+	        // Xóa thông báo cũ
+	        $('.cart-alert').remove();
+	        
+	        const alertClass = type === 'success' ? 'alert-success' : 
+	                          type === 'warning' ? 'alert-warning' : 'alert-danger';
+	        const icon = type === 'success' ? 'fa-check-circle' : 
+	                    type === 'warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle';
+	        
+	        const alertHtml = `
+	            <div class="alert ${alertClass} alert-dismissible fade show cart-alert" role="alert">
+	                <i class="fa ${icon} me-2"></i>
+	                ${message}
+	                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	            </div>
+	        `;
+	        
+	        $('.shop-cart').prepend(alertHtml);
+	        
+	        setTimeout(function() {
+	            $('.cart-alert').alert('close');
+	        }, 3000);
+	    }
 	</script>
+
 	<script type="text/javascript">
 		function deleteCartProduct(productId) {
 		    if (!confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) return;

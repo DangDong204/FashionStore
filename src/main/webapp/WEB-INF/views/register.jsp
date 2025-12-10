@@ -44,17 +44,63 @@
         </div>
     </div>
 
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+		
+		  const form = document.querySelector("form[action$='/register']");
+		  const passwordInput = form.querySelector("input[name='password']");
+		
+		  form.addEventListener("submit", function(event) {
+		    const password = passwordInput.value;
+		    let hasError = false;
+		
+		    const rules = {
+		      length: /.{8,}/,
+		      upper: /[A-Z]/,
+		      lower: /[a-z]/,
+		      number: /[0-9]/,
+		      special: /[!@#$%^&*(),.?":{}|<>]/,
+		    };
+		
+		    if (!rules.length.test(password)) {
+		      showError("Mật khẩu phải có ít nhất 8 ký tự.");
+		      hasError = true;
+		    } else if (!rules.upper.test(password)) {
+		      showError("Mật khẩu phải có ít nhất 1 chữ hoa.");
+		      hasError = true;
+		    } else if (!rules.lower.test(password)) {
+		      showError("Mật khẩu phải có ít nhất 1 chữ thường.");
+		      hasError = true;
+		    } else if (!rules.number.test(password)) {
+		      showError("Mật khẩu phải có ít nhất 1 số.");
+		      hasError = true;
+		    } else if (!rules.special.test(password)) {
+		      showError("Mật khẩu phải có ít nhất 1 ký tự đặc biệt.");
+		      hasError = true;
+		    }
+		
+		    if (hasError) {
+		      event.preventDefault();
+		    }
+		  });
+		
+		  // Hiển thị lỗi kiểu Bootstrap-like
+		  function showError(message) {
+		    passwordInput.classList.add("is-invalid");
+		
+		    let error = passwordInput.nextElementSibling;
+		    if (!error || !error.classList.contains("invalid-feedback")) {
+		      error = document.createElement("div");
+		      error.className = "invalid-feedback d-block";
+		      passwordInput.insertAdjacentElement("afterend", error);
+		    }
+		    error.innerText = message;
+		  }
+		
+		});
+		</script>
+
 
 </body>
-<!-- 
-<script>
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("success") === "register") {
-        alert("Đăng ký thành công! Mời bạn đăng nhập.");
-    }
-    if (params.get("error") === "exists") {
-        alert("Tên đăng nhập đã tồn tại!");
-    }
-</script>
- -->
+
 </html>

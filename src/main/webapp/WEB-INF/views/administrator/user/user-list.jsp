@@ -65,13 +65,13 @@
               <tbody class="text-center">
          		<c:forEach var="user" items="${users }" varStatus="loop">
 			        <tr>
-			          <%-- <td>${loop.index + 1}</td> --%>
-			          <td>${user.id }</td>
+			          <td>${loop.index + 1}</td> 
+			          <%-- <td>${user.id }</td> --%>
 			          <td>${user.username }</td>
 			          <%-- <td>${user.password }</td> --%>
 			          <td>${user.name }</td>
 			          <td>${user.mobile }</td>
-			          <td>${user.email }</td>
+			          <td>${user.roleNames }</td>
 			         	
 			          <td class="text-center">
                    		<c:choose>
@@ -108,7 +108,7 @@
 						</button>
 			          		          	
 			            <button type="button"
-						    class="btn btn-warning btn-sm text-white"
+						    class="btn btn-warning btn-sm text-black"
 						    title="Sửa user"
 						    data-bs-toggle="modal"
 						    data-bs-target="#editUserModal"
