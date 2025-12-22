@@ -12,6 +12,6 @@ public class Javaweb32Starter {
 				new SpringApplication(Javaweb32Starter.class);
 		
 		start.run(args);
-	}
+	}	
 
 }

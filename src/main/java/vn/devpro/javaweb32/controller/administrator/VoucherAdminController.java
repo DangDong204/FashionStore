@@ -21,8 +21,8 @@ public class VoucherAdminController extends BaseController{
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String list(Model model) {
-		List<Voucher> vouchers = vs.findAll();
-//		List<Voucher> vouchers = vs.findAllActive();
+//		List<Voucher> vouchers = vs.findAll();
+		List<Voucher> vouchers = vs.findAllActive();
 		model.addAttribute("vouchers", vouchers);
 	
 		return "administrator/voucher/voucher-list";

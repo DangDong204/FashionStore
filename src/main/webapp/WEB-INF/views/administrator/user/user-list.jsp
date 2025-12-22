@@ -58,7 +58,7 @@
                   <th scope="col">Họ tên</th>
                   <th scope="col">Số điện thoại</th>
                   <th scope="col">Quyền</th>
-                  <th scope="col">Status</th>
+                  <!-- <th scope="col">Status</th> -->
                   <th scope="col">Thao tác</th>
                 </tr>
               </thead>
@@ -73,7 +73,7 @@
 			          <td>${user.mobile }</td>
 			          <td>${user.roleNames }</td>
 			         	
-			          <td class="text-center">
+			         <%--  <td class="text-center">
                    		<c:choose>
                    			<c:when test="${user.status }">
           						<i class="bi bi-check-circle-fill text-success" title="Active"></i>
@@ -82,7 +82,7 @@
           						<i class="bi bi-x-circle-fill text-danger" title="Inactive"></i>
                    			</c:otherwise>
                    		</c:choose>
-                      </td>
+                      </td> --%>
                       
 			          <td>
 			          	<button type="button"

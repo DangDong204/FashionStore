@@ -57,7 +57,7 @@
                   <th scope="col">Giá trị</th>
                   <th scope="col">Ngày bắt đầu</th>
                   <th scope="col">Ngày kết thúc</th>
-                  <th scope="col">Status</th>
+                  <!-- <th scope="col">Status</th> -->
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -96,7 +96,7 @@
 			          <td class="text-center">
 			            <fmt:formatDate value="${voucher.endDate }" pattern="dd-MM-yyyy"/>
 			          </td>
-			          <td class="text-center">
+			         <%--  <td class="text-center">
                    		<c:choose>
                    			<c:when test="${voucher.status }">
           						<i class="bi bi-check-circle-fill text-success" title="Active"></i>
@@ -105,7 +105,7 @@
           						<i class="bi bi-x-circle-fill text-danger" title="Inactive"></i>
                    			</c:otherwise>
                    		</c:choose>
-                      </td>
+                      </td> --%>
                       
 			          <td>
  			          	<button type="button"

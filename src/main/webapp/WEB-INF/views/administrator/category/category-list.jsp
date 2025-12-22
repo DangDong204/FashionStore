@@ -52,31 +52,33 @@
               <thead class="table-light text-center">
                 <tr>
                   <!-- <th scope="col">No</th> -->
-                  <th scope="col">Id</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Create By</th>
+                  <th scope="col">No</th>
+                  <th scope="col">Tên danh mục</th>
+                  <th scope="col">Mô tả</th>
+                  <!-- <th scope="col">Create By</th>
                   <th scope="col">Update By</th>
                   <th scope="col">Create Date</th>
-                  <th scope="col">Update Date</th>
-                  <th scope="col">Status</th>
+                  <th scope="col">Update Date</th> -->
+                  <!-- <th scope="col">Status</th> -->
                   <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody class="text-center">
          		<c:forEach var="category" items="${categories }" varStatus="loop">
 			        <tr>
-			          <%-- <td>${loop.index + 1}</td> --%>
-			          <td>${category.id }</td>
+			          <td>${loop.index + 1}</td>
+			          <%-- <td>${category.id }</td> --%>
 			          <td>${category.name }</td>
-			          <td>${category.createBy }</td>
+			          <td>${category.description }</td>
+			          <%-- <td>${category.createBy }</td>
 			          <td>${category.updateBy }</td>
 			          <td class="text-center">
 			            <fmt:formatDate value="${category.createDate }" pattern="dd-MM-yyyy"/>
 			          </td>
 			          <td class="text-center">
 			            <fmt:formatDate value="${category.updateDate }" pattern="dd-MM-yyyy"/>
-			          </td>
-			          <td class="text-center">
+			          </td> --%>
+			          <%-- <td class="text-center">
                    		<c:choose>
                    			<c:when test="${category.status }">
           						<i class="bi bi-check-circle-fill text-success" title="Active"></i>
@@ -85,7 +87,7 @@
           						<i class="bi bi-x-circle-fill text-danger" title="Inactive"></i>
                    			</c:otherwise>
                    		</c:choose>
-                      </td>
+                      </td> --%>
                       
 			          <td>
 			          	<button type="button"

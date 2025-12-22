@@ -41,11 +41,11 @@
           <div class="card-body">
             <h5 class="card-title">Danh sách đơn hàng</h5>
 
-            <div class="text-end mb-3">
+            <!-- <div class="text-end mb-3">
               <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSaleOrderModal">
                 <i class="ri-add-circle-fill"></i> Thêm mới
               </button>
-            </div>
+            </div> -->
 
             <!-- Bảng hiển thị đơn hàng -->
             <table class="table table-striped table-hover table-bordered align-middle datatable">
@@ -56,7 +56,7 @@
                   <th scope="col">Mã đơn hàng</th>
                   <th scope="col">Tổng giá trị</th>
                   <th scope="col">Trạng thái đơn hàng</th>
-                  <th scope="col">Status</th>
+                  <!-- <th scope="col">Status</th> -->
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -114,7 +114,7 @@
 							</c:choose>
 						</td>
 
-						<td class="text-center">
+						<%-- <td class="text-center">
 							<c:choose>
 								<c:when test="${saleorder.status }">
 									<i class="bi bi-check-circle-fill text-success"
@@ -125,7 +125,7 @@
 										title="Inactive"></i>
 								</c:otherwise>
 							</c:choose>
-						</td>
+						</td> --%>
 
 						<td>
 							<!-- Nút Xem chi tiết -->
